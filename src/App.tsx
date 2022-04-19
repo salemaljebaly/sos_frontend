@@ -1,5 +1,6 @@
+import { Checkbox, TextField } from '@mui/material';
 import { useEffect } from 'react';
-import './App.css';
+import MiniDrawer from './components/drawer2';
 
 
 
@@ -16,7 +17,7 @@ function App() {
   
   return (
     <div className="App">
-      testsdfsf
+      <MiniDrawer />
     </div>
   );
 }

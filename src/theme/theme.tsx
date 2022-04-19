@@ -1,10 +1,8 @@
 import { red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
-import { Direction } from "@mui/material/";
-import Strings from "../utils/Strings";
 
 const theme = createTheme({
-  direction: "rtl",
+  direction: "ltr",
   typography:{
     fontFamily :[
       'Almarai', "sans-serif"
