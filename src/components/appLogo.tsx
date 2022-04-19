@@ -16,11 +16,15 @@ const AppLogo : React.FC<Props> = (props) => {
         textAlign: "center",
       }}
     >
-      <img
+      <Box
+        component="img"
         src="/images/icons/sos_logo.svg"
         alt="Picture of the author"
         width={imageSize}
         height={imageSize}
+        sx={{
+          maxWidth: '100%'
+      }}
       />
     </Box>
   );

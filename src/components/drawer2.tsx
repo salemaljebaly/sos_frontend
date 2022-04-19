@@ -14,8 +14,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
