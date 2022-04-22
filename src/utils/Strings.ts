@@ -14,6 +14,16 @@ export default class{
     static forgetPassword  :String = "نسيت كلمة المرور";
     static dontHaveAccount  :String = " ليس لديك حساب ؟ سجل الأن";
     static allRightsReserved: String = "جميع الحقوق محفوظة";
+    static addUser: String = "اضافة مستخدم";
+    static firstName: String = "الأسم الأول";
+    static lastName: String = "الأسم الأخير";
+    static email: String = "الايميل";
+    static activeUser: String = "تفعيل المستخدم";
+    static normalUser : String = "مستخدم عادي";
+    static admin : String = "مدير";
+    static permission :String = "الصلاحية";
+    static userCreated :String = "تم انشاء المستخدم";
+    static userNotCreated :String = "توجد مشكلة في البيانات";
     // --------------------------------------------------------------- //
     // drawer menu items
     static menuMain: String = "الرئيسية";

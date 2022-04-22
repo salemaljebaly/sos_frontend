@@ -1,25 +1,19 @@
-import { Checkbox, TextField } from '@mui/material';
-import { useEffect } from 'react';
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import MiniDrawer from './components/drawer2';
-
-
-
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
-  useEffect(()=>{
-    fetch(
-      "http://localhost:3000/about")
-                  .then((res) => res.json())
-                  .then((json) => {
-                    console.log(json);
-                  })
-  },[]);
   
   return (
-    <div className="App">
+    <>
+    <Router>
       <MiniDrawer />
-    </div>
-  );
+    </Router>
+    </>
+  )
 }
 
 export default App;

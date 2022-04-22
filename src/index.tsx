@@ -5,8 +5,8 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { createRoot } from "react-dom/client";
-import createEmotionCache from "./utils/createEmotionCache";
-import { CacheProvider, EmotionCache } from "@emotion/react";
+// import createEmotionCache from "./utils/createEmotionCache";
+import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme/theme";
 import { CssBaseline } from "@mui/material";
@@ -14,11 +14,11 @@ import createCache from '@emotion/cache';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
 
 // Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
+// const clientSideEmotionCache = createEmotionCache();
 
-interface MyAppProps {
-  emotionCache?: EmotionCache;
-}
+// interface MyAppProps {
+//   emotionCache?: EmotionCache;
+// }
 // Create rtl cache
 // Create rtl cache
 const cacheRtl = createCache({
