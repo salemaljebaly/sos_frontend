@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./userService";
-import { LoginModel, UserModel, Users, UserState } from "./userModel";
+import { LoginModel, UserModel, UsersModel, UserState } from "./userModel";
 import { ErrorResponse } from "./ErrorResponse";
 import { RootState } from "../../app/store";
 

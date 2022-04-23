@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { LoginModel, UserModel, UserModelFromToken, Users } from "./userModel";
+import { LoginModel, UserModel, UserModelFromToken, UsersModel } from "./userModel";
 
 const API_URL = 'http://localhost:4000/'
 
@@ -37,10 +37,11 @@ const getAllUsers = async (access_token: string) => {
         },
       }
     const response = await axios.get(API_URL + 'users', config);
-    let users : Users[];
+    let users : UsersModel[];
     if(response.data){
         users  = response.data
         return users;
+        
     }
     return response.data;
 }
@@ -88,15 +89,21 @@ const deleteUserById  = async (access_token: string, id : number) => {
 // delete user from database
 const searchInUsers  = async (access_token: string, keyword : string) => {
     
-    const config = {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    const response = await axios.get(API_URL + 'users/' + keyword, config);
-    
-    // it retrun array of users 
-    return response.data;
+  const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  const response = await axios.get(API_URL + 'users/' + keyword, config);
+  
+  // it retrun array of users 
+  return response.data;
+}
+
+// delete user from database
+// Logout user
+const logout = () => {
+  localStorage.removeItem('user')
 }
 
 
@@ -109,7 +116,8 @@ const authService = {
     deleteUserById,
     updateUserById, 
     findUserByID,
-    searchInUsers
+    searchInUsers,
+    logout
 }
 
 export default authService;

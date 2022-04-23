@@ -39,5 +39,11 @@ export default class{
     static citizenCount:String = "عدد المواطنين";
     static myProfile:String = "حسابي";
     static logout : String = "تسجيل الخروج";
+    static id: string = "الرقم";
+    static isActive: string = "حالة الحساب";
+    static createdAt: string = "تاريخ الانشاء";
+    static updatedAt: string = "تاريخ التعديل";
+    static fullName: string = "الأسم الكامل";
+    static delete : string = "حذف";
 
 }

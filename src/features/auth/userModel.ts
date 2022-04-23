@@ -43,7 +43,7 @@ export interface UserState {
 
 // --------------------------------------------------- //
 // user all fields
-export interface Users {
+export interface UsersModel {
   id: number;
   firstName: string;
   lastName: string;

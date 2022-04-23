@@ -15,11 +15,16 @@ import {
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login, register, getAllUser, reset, deleteUserById, updateUserById } from "../features/auth/userSlice";
-import { Role } from "../utils/enum/role.enum";
-import Strings from "../utils/Strings";
+import { useParams } from "react-router-dom";
+import { login, register, getAllUser, reset, deleteUserById, updateUserById } from "../../features/auth/userSlice";
+import { Role } from "../../utils/enum/role.enum";
+import Strings from "../../utils/Strings";
 
 function Register() {
+  
+  const {id} = useParams();
+
+  console.log("get param register" + id);
   // -------------------------------------------------------------- //
   // handle check box state
   const [activiateChecked, setChecked] = React.useState(true);
@@ -95,6 +100,7 @@ function Register() {
     //   console.log(message)
     // }
 
+    console.log("params : " + id);
     if (isSucces || user) {
       // TODO navigate
     }
@@ -116,7 +122,6 @@ function Register() {
 
   return (
     <>
-    
       {/* {
         isError ?
           message.map((err: string, index : number) => {

@@ -27,16 +27,16 @@ import { AccountCircle } from "@mui/icons-material";
 import theme from "../theme/theme";
 import DashBoardCards from "./dashBoardCards";
 import DataTable from "./table";
-import { Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { red } from "@mui/material/colors";
-import Register from "../pages/Register";
+import Register from "../pages/users/Register";
 import Dashboard from "../pages/Dashboard";
-import Login from "../pages/Login";
+import Login from "../pages/users/Login";
 import Reports from "../pages/Reports";
 import About from "../pages/About";
 import PolicesOffices from "../pages/PolicesOffices";
 import Citizens from "../pages/Citizens";
-import Users from "../pages/Users";
+import Users from "../pages/users/Users";
 
 const drawerWidth = 240;
 
@@ -273,16 +273,16 @@ export default function MiniDrawer() {
         {/* <DataTable /> */}
         {/* <Register /> */}
         
-        <Routes>
-        <Route path='/' element={<Register />} />
-          <Route path='/users' element={<Users />} >
-            <Route path=':id' element={<Users />} />
-          </Route>
-          <Route path='/citizens' element={<Citizens />} />
-          <Route path='/reports' element={<Reports />} />
-          <Route path='/policesoffices' element={<PolicesOffices />} />
-          <Route path='/about' element={<About />} />
-        </Routes>
+          <Routes>
+            <Route path='users' element={<Users />} >
+              <Route path='add' element={<Register />} />
+            </Route>
+            <Route path='users/edit:id' element={<Citizens />} />
+            <Route path='/citizens' element={<Citizens />} />
+            <Route path='/reports' element={<Reports />} />
+            <Route path='/policesoffices' element={<PolicesOffices />} />
+            <Route path='/about' element={<About />} />
+          </Routes>
       </Box>
     </Box>
   );
