@@ -1,6 +1,8 @@
 import { Role } from "../../utils/enum/role.enum";
 import { ErrorResponse } from "./ErrorResponse";
 
+// --------------------------------------------------- //
+// user model require field
 export interface UserModel {
   id: number;
   email: string;
@@ -11,12 +13,15 @@ export interface UserModel {
   role: string;
   username: string;
 }
-
+// --------------------------------------------------- //
+// login model require field
 export interface LoginModel {
   username: string;
   password: string;
 }
 
+// --------------------------------------------------- //
+// extract data from UserModelFromToken
 export interface UserModelFromToken {
   username: string;
   firstname: string;
@@ -26,6 +31,8 @@ export interface UserModelFromToken {
   access_token: string;
 }
 
+// --------------------------------------------------- //
+// return user from redux state
 export interface UserState {
   user: UserModelFromToken | null;
   isError: boolean;
@@ -34,6 +41,8 @@ export interface UserState {
   message: string;
 }
 
+// --------------------------------------------------- //
+// user all fields
 export interface Users {
   id: number;
   firstName: string;
@@ -45,3 +54,4 @@ export interface Users {
   updateAt: Date;
   role: string;
 }
+// --------------------------------------------------- //

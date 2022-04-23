@@ -1,30 +1,21 @@
 import {
-  Alert,
-  Avatar,
-  Backdrop,
   Button,
   Checkbox,
-  CircularProgress,
-  Container,
   CssBaseline,
   FormControl,
   FormControlLabel,
   Grid,
   InputLabel,
-  Link,
   MenuItem,
   Select,
   SelectChangeEvent,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import CustomizedSnackbars, { Severity } from "../components/SnackBar";
-import TransitionAlerts from "../components/TransitionAlert";
-import { login, register, getAllUser, reset, deleteUserById, updateUserById } from "../features/auth/authSlice";
+import { login, register, getAllUser, reset, deleteUserById, updateUserById } from "../features/auth/userSlice";
 import { Role } from "../utils/enum/role.enum";
 import Strings from "../utils/Strings";
 

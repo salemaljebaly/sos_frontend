@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authService";
+import authService from "./userService";
 import { LoginModel, UserModel, Users, UserState } from "./userModel";
 import { ErrorResponse } from "./ErrorResponse";
 import { RootState } from "../../app/store";
@@ -110,8 +110,8 @@ export const updateUserById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // update user by id
-export const findUserByID = createAsyncThunk (
-  "user/updateUserById",
+export const findUserById = createAsyncThunk (
+  "user/findUserById",
   async (id : number, thunkAPI) => {
     try {
       // TODO check find user works
@@ -130,7 +130,7 @@ export const findUserByID = createAsyncThunk (
 // ------------------------------------------------------------------------------------------- //
 // update user by id
 export const searchInUsers = createAsyncThunk (
-  "user/updateUserById",
+  "user/searchInUsers",
   async (keyword : string, thunkAPI) => {
     try {
       // TODO check find user works
@@ -233,15 +233,15 @@ export const authSlice = createSlice({
       // ------------------------------------------------------------------ //
       // find user by id
       // TODO return fix  delete message 
-      .addCase(findUserByID.pending, (state) => {
+      .addCase(findUserById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(findUserByID.fulfilled, (state, action) => {
+      .addCase(findUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.user = action.payload;
       })
-      .addCase(findUserByID.rejected, (state, action) => {
+      .addCase(findUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
@@ -284,6 +284,7 @@ export const authSlice = createSlice({
         console.log("from reject " + action.payload);
         state.user = null;
       })
+      // ------------------------------------------------------------------ //
   },
 });
 
