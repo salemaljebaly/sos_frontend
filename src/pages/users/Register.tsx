@@ -91,8 +91,8 @@ function Register() {
   };
   // -------------------------------------------------------------- //
   const dispatch = useDispatch();
-  const { user, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.user
+  const { auth, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.auth
   );
 
   useEffect(() => {
@@ -101,12 +101,12 @@ function Register() {
     // }
 
     console.log("params : " + id);
-    if (isSucces || user) {
+    if (isSucces || auth) {
       // TODO navigate
     }
 
     dispatch(reset);
-  }, [user, isError, isSucces, isLoading, message]);
+  }, [auth, isError, isSucces, isLoading, message]);
 
   if (isLoading) {
     console.log("loading > > > ");

@@ -47,8 +47,7 @@ const actionColumn = [
     renderCell: (params: any) => {
       return (
         <Box className="cellAction" >
-          
-          <Link to={`/users/edit/${params.row.id}`}
+          <Link to={`/user/${params.row.id}`}
             style={{ textDecoration: "none" }}>
             
             <RemoveRedEye sx={{color: green[500], marginRight: 2, marginLeft: 2}} >

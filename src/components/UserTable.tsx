@@ -103,7 +103,7 @@ export default function StickyHeadTable({data} : Props) {
                       );
                     })}
                      <TableCell >
-                     <RemoveRedEye sx={{color: green[500], marginRight: 2, marginLeft: 2}} onClick={() => {navigate(`/users/edit/${row.id}`)}} />
+                     <RemoveRedEye sx={{color: green[500], marginRight: 2, marginLeft: 2}} onClick={() => {navigate(`/user/${row.id}`)}} />
                         </TableCell>
                     
                   </TableRow>

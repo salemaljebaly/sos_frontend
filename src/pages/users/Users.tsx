@@ -19,6 +19,7 @@ function Users() {
   const { users, isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.users
   );
+
   console.log(users);
   
   let userData : UsersModel[] = users as UsersModel[];
@@ -44,8 +45,7 @@ function Users() {
   }, [])
   return (
     // TODO fix object to array 
-    // <DataTable data={userData} />
-    <EnhancedTable data={users} />
+    <DataTable data={userData} />
   )
 }
 
