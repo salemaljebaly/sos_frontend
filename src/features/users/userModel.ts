@@ -4,7 +4,7 @@ import { ErrorResponse } from "./ErrorResponse";
 // --------------------------------------------------- //
 // user model require field
 export interface UserModel {
-  id: number;
+  id?: number;
   email: string;
   firstName: string;
   isActive: boolean;

@@ -16,13 +16,18 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { login, register, getAllUser, reset, deleteUserById, updateUserById } from "../../features/users/userSlice";
+import { login, register, getAllUser, reset, findUserById, deleteUserById, updateUserById } from "../../features/users/userSlice";
 import { Role } from "../../utils/enum/role.enum";
 import Strings from "../../utils/Strings";
 
 function Register() {
   
   const {id} = useParams();
+  const dispatch = useDispatch();
+  
+  const { users, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.users
+  );
 
   console.log("get param register" + id);
   // -------------------------------------------------------------- //
@@ -65,10 +70,33 @@ function Register() {
       isActive: activiateChecked,
       role: userRole,
     });
-    
-    // register user done need to fix ui
-    // dispatch(register(formData));
-    // dispatch(reset);
+    if(id === undefined){
+      console.log(`user id undefined`);
+      // register user done need to fix ui
+      dispatch(register(formData));
+      dispatch(reset);
+    } else {
+        // TODO check user name duplicates
+        console.log(`user id ${id}`);
+        // ----------------------------------------------------------------------- //
+        // git user by id
+        const currrentUserData = dispatch(findUserById(Number(id)));
+        console.log('=============' + dispatch(findUserById(Number(id))));
+        // ----------------------------------------------------------------------- //
+        // update user by id
+        dispatch(updateUserById({
+          id: Number(id),
+          firstName: data.get("firstName")!.toString(),
+          lastName: data.get("lastName")!.toString(),
+          username: data.get("username")!.toString(),
+          email: data.get("email")!.toString(),
+          password: data.get("password")!.toString(),
+          isActive: activiateChecked,
+          role: userRole,
+        }))
+        // ----------------------------------------------------------------------- //
+    }
+
 
     // login user done need to fix ui
     // dispatch(login({
@@ -82,32 +110,12 @@ function Register() {
 
     // dispatch(deleteUserById(26))
 
-    // dispatch(updateUserById({
-    //   id:27,
-    //   email: "5555@salem.com"
-    // }))
+
     
     // dispatch(reset);
   };
   // -------------------------------------------------------------- //
-  const dispatch = useDispatch();
-  const { auth, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.auth
-  );
-
-  useEffect(() => {
-    // if (isError) {
-    //   console.log(message)
-    // }
-
-    console.log("params : " + id);
-    if (isSucces || auth) {
-      // TODO navigate
-    }
-
-    dispatch(reset);
-  }, [auth, isError, isSucces, isLoading, message]);
-
+  
   if (isLoading) {
     console.log("loading > > > ");
   }
