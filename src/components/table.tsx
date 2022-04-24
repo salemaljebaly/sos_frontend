@@ -7,6 +7,8 @@ import { DeleteForeverOutlined, DeleteForeverRounded, DeleteOutlineRounded, Dele
 import Strings from '../utils/Strings';
 import { Box } from '@mui/system';
 import { green, red } from '@mui/material/colors';
+import {  deleteUserById } from '../features/users/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -31,13 +33,23 @@ interface Props{
   data: UsersModel[];
 }
 
-// ---------------------------------------------------------------------------------- //
+
+
+export default function DataTable({data} : Props) {  
+  const dispatch = useDispatch();
+  // const { users, isError, isSucces, isLoading, message } = useSelector(
+  //   (state: any) => state.users
+  // );
+  // ---------------------------------------------------------------------------------- //
 // handle delete button
+
 const handleDelete = (id : number) => {
-  // TODO delete from users
+  // TODO delete from users fix delete user
+
+  dispatch(deleteUserById(id));
   alert('userDeleted' + id);
 };
-// ---------------------------------------------------------------------------------- //
+  // ---------------------------------------------------------------------------------- //
 // handle action [delete and view]
 const actionColumn = [
   {
@@ -68,8 +80,6 @@ const actionColumn = [
   },
 ];
 // ---------------------------------------------------------------------------------- //
-export default function DataTable({data} : Props) {
-  
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
