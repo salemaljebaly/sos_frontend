@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import EnhancedTable from '../../components/UserTable';
 import DataTable from '../../components/table'
-import { UsersModel } from '../../features/auth/userModel';
-import { getAllUser } from '../../features/auth/userSlice';
+import { UsersModel } from '../../features/users/userModel';
+import { getAllUser } from '../../features/users/userSlice';
 
 interface Props{
   userData: UsersModel[];
@@ -15,12 +16,12 @@ function Users() {
 
   console.log("get param from user" + id);
   const dispatch = useDispatch();
-  const { user, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.user
+  const { users, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.users
   );
-  console.log(user[0]);
+  console.log(users);
   
-  let userData : UsersModel[] = user as UsersModel[];
+  let userData : UsersModel[] = users as UsersModel[];
 
   useEffect(() => {
     dispatch(getAllUser());
@@ -43,7 +44,8 @@ function Users() {
   }, [])
   return (
     // TODO fix object to array 
-    <DataTable data={userData} />
+    // <DataTable data={userData} />
+    <EnhancedTable data={users} />
   )
 }
 

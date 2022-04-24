@@ -34,7 +34,7 @@ export interface UserModelFromToken {
 // --------------------------------------------------- //
 // return user from redux state
 export interface UserState {
-  user: UserModelFromToken | null;
+  users: UsersModel[] | null;
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;

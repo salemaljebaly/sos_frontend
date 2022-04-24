@@ -1,44 +1,44 @@
 export default class{
-    static appName:String = "لوحة تحكم نظام البلاغات";
-    static menuColor :String = '#F9F9F9';
+    static appName:string = "لوحة تحكم نظام البلاغات";
+    static menuColor :string = '#F9F9F9';
     // --------------------------------------------------------------- //
     // control page direction
     static  PAGE_DIR  = "rtl";
     static isRtl = false;
     // --------------------------------------------------------------- //
     // sign in strings
-    static userName :String = "اسم المستخدم";
-    static password :String = "كلمة المرور";
-    static signInButtonText :String = "تسجيل الدخول";
-    static rememberMe  :String = "تذكرني";
-    static forgetPassword  :String = "نسيت كلمة المرور";
-    static dontHaveAccount  :String = " ليس لديك حساب ؟ سجل الأن";
-    static allRightsReserved: String = "جميع الحقوق محفوظة";
-    static addUser: String = "اضافة مستخدم";
-    static firstName: String = "الأسم الأول";
-    static lastName: String = "الأسم الأخير";
-    static email: String = "الايميل";
-    static activeUser: String = "تفعيل المستخدم";
-    static normalUser : String = "مستخدم عادي";
-    static admin : String = "مدير";
-    static permission :String = "الصلاحية";
-    static userCreated :String = "تم انشاء المستخدم";
-    static userNotCreated :String = "توجد مشكلة في البيانات";
+    static userName :string = "اسم المستخدم";
+    static password :string = "كلمة المرور";
+    static signInButtonText :string = "تسجيل الدخول";
+    static rememberMe  :string = "تذكرني";
+    static forgetPassword  :string = "نسيت كلمة المرور";
+    static dontHaveAccount  :string = " ليس لديك حساب ؟ سجل الأن";
+    static allRightsReserved: string = "جميع الحقوق محفوظة";
+    static addUser: string = "اضافة مستخدم";
+    static firstName: string = "الأسم الأول";
+    static lastName: string = "الأسم الأخير";
+    static email: string = "الايميل";
+    static activeUser: string = "تفعيل المستخدم";
+    static normalUser : string = "مستخدم عادي";
+    static admin : string = "مدير";
+    static permission :string = "الصلاحية";
+    static userCreated :string = "تم انشاء المستخدم";
+    static userNotCreated :string = "توجد مشكلة في البيانات";
     // --------------------------------------------------------------- //
     // drawer menu items
-    static menuMain: String = "الرئيسية";
-    static menuUsers: String = "المستخدمين";
-    static menuCitizen: String = "المواطنون";
-    static menuReports: String = "البلاغات";
-    static menuPolicesOffices: String = "مراكز الشرطة";
-    static menuAdditionInfo: String = "معلومات اضافية";
+    static menuMain: string = "الرئيسية";
+    static menuUsers: string = "المستخدمين";
+    static menuCitizen: string = "المواطنون";
+    static menuReports: string = "البلاغات";
+    static menuPolicesOffices: string = "مراكز الشرطة";
+    static menuAdditionInfo: string = "معلومات اضافية";
     // --------------------------------------------------------------- //
     // dashboard strings
-    static userCounts:String = "عدد المستخدمين";
-    static reportCount:String = "عدد التقارير";
-    static citizenCount:String = "عدد المواطنين";
-    static myProfile:String = "حسابي";
-    static logout : String = "تسجيل الخروج";
+    static userCounts:string = "عدد المستخدمين";
+    static reportCount:string = "عدد التقارير";
+    static citizenCount:string = "عدد المواطنين";
+    static myProfile:string = "حسابي";
+    static logout : string = "تسجيل الخروج";
     static id: string = "الرقم";
     static isActive: string = "حالة الحساب";
     static createdAt: string = "تاريخ الانشاء";

@@ -7,7 +7,7 @@ import { RootState } from "../../app/store";
 // Get user from local storage
 const user = JSON.parse(localStorage.getItem("user")!);
 const initialState : UserState = {
-  user: user ? user : null, // check if there is user
+  users: [], // check if there is user
   isError: false,
   isSucces: false,
   isLoading: false,
@@ -148,7 +148,7 @@ export const searchInUsers = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 
-export const authSlice = createSlice({
+export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -169,31 +169,14 @@ export const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
         console.log(action.payload)
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
-        state.user = null;
-      })
-      // ------------------------------------------------------------------ //
-      // register
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSucces = true;
-        state.user = action.payload;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload as string; // get value when reject
-        console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
       // get All user
@@ -203,14 +186,14 @@ export const authSlice = createSlice({
       .addCase(getAllUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(getAllUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
         console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
       // update user by id
@@ -221,14 +204,14 @@ export const authSlice = createSlice({
       .addCase(updateUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(updateUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
         console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
       // find user by id
@@ -239,14 +222,14 @@ export const authSlice = createSlice({
       .addCase(findUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(findUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
         console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
       // find user by id
@@ -257,14 +240,14 @@ export const authSlice = createSlice({
       .addCase(searchInUsers.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(searchInUsers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
         console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
       // delete user by id
@@ -275,18 +258,18 @@ export const authSlice = createSlice({
       .addCase(deleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(deleteUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string; // get value when reject
         console.log("from reject " + action.payload);
-        state.user = null;
+        state.users = null;
       })
       // ------------------------------------------------------------------ //
   },
 });
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+export const { reset } = userSlice.actions;
+export default userSlice.reducer;

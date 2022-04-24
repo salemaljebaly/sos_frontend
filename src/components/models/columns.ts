@@ -1,4 +1,5 @@
 import { GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { UserModel } from "../../features/users/userModel";
 import Strings from "../../utils/Strings";
 
 export const userColumns: GridColDef[] = [
@@ -18,5 +19,70 @@ export const userColumns: GridColDef[] = [
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
         `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+    },
+  ];
+
+
+  interface Data {
+    calories: number;
+    carbs: number;
+    fat: number;
+    name: string;
+    protein: number;
+  }
+  
+  function createData(
+    id: number,
+    email: string,
+    firstName: string,
+    isActive: boolean,
+    lastName: string,
+    password: string,
+    role: string,
+    username: string,
+  ): UserModel {
+    return {
+      id,
+      email,
+      firstName,
+      isActive,
+      lastName,
+      password,
+      role,
+      username,
+    };
+  }
+  
+  interface HeadCell {
+    disablePadding: boolean;
+    id: keyof UserModel;
+    label: string;
+  }
+
+export const headCells: readonly HeadCell[] = [
+    {
+      id: 'id',
+      disablePadding: true,
+      label:  Strings.id,
+    },
+    {
+      id: 'firstName',
+      disablePadding: true,
+      label:  Strings.fullName,
+    },
+    {
+      id: 'email',
+      disablePadding: true,
+      label:  Strings.email.toString(),
+    },
+    {
+      id: 'isActive',
+      disablePadding: true,
+      label:  Strings.isActive.toString(),
+    },
+    {
+      id: 'role',
+      disablePadding: true,
+      label:  Strings.permission.toString(),
     },
   ];

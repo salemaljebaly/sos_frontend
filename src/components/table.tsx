@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import {  UsersModel } from '../features/auth/userModel';
+import {  UsersModel } from '../features/users/userModel';
 import { userColumns } from './models/columns';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { DeleteForeverOutlined, DeleteForeverRounded, DeleteOutlineRounded, DeleteRounded, RemoveRedEye } from '@mui/icons-material';
@@ -48,7 +48,8 @@ const actionColumn = [
       return (
         <Box className="cellAction" >
           
-          <Link to={`/users/edit/${params.row.id}`}  style={{ textDecoration: "none" }}>
+          <Link to={`/users/edit/${params.row.id}`}
+            style={{ textDecoration: "none" }}>
             
             <RemoveRedEye sx={{color: green[500], marginRight: 2, marginLeft: 2}} >
               
