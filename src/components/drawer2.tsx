@@ -280,6 +280,7 @@ export default function MiniDrawer() {
             <Route path='/user' element={<Register />} >
               <Route path=":id" element={<Register />} />
             </Route>
+            <Route path="/register" element={<Register />} />
             <Route path='/reports' element={<Reports />} />
             <Route path='/policesoffices' element={<PolicesOffices />} />
             <Route path='/about' element={<About />} />

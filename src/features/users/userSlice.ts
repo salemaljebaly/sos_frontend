@@ -6,10 +6,11 @@ import { LoginModel, UserModel, UsersModel, UserState } from "./userModel";
 const user = JSON.parse(localStorage.getItem("user")!);
 const initialState : UserState = {
   users: [], // check if there is user
+  singleUser : {},
   isError: false,
   isSucces: false,
   isLoading: false,
-  message: "",
+  message: [],
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -150,12 +151,26 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    // ------------------------------------------------------------------ //
+    // reset state
     reset: (state) => {
+      console.log('reseting ...')
+      state.users = null;
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
-      state.message = "";
+      state.message = [];
     },
+    // ------------------------------------------------------------------ //
+    // use this function to changes in data 
+    handleChangeData : (state ,action) => {
+      console.log(action.payload)
+      state.singleUser = {
+        ...state.singleUser, 
+        [action.payload.name] : action.payload.value
+      }
+    }
+    // ------------------------------------------------------------------ //
   },
   extraReducers: (builder) => {
     builder
@@ -173,7 +188,7 @@ export const userSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         state.users = null;
       })
       // ------------------------------------------------------------------ //
@@ -189,7 +204,7 @@ export const userSlice = createSlice({
       .addCase(getAllUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
       })
@@ -207,7 +222,7 @@ export const userSlice = createSlice({
       .addCase(updateUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
       })
@@ -220,14 +235,14 @@ export const userSlice = createSlice({
       .addCase(findUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.users = action.payload;
+        state.singleUser =  action.payload;
       })
       .addCase(findUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
-        state.users = null;
+        state.singleUser = null;
       })
       // ------------------------------------------------------------------ //
       // find user by id
@@ -243,7 +258,7 @@ export const userSlice = createSlice({
       .addCase(searchInUsers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
       })
@@ -261,7 +276,7 @@ export const userSlice = createSlice({
       .addCase(deleteUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
+        state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
       })
@@ -269,5 +284,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
+export const { reset , handleChangeData} = userSlice.actions;
 export default userSlice.reducer;

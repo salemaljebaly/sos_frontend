@@ -16,127 +16,107 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { login, register, getAllUser, reset, findUserById, deleteUserById, updateUserById } from "../../features/users/userSlice";
+import { Severity } from "../../components/SnackBar";
+import TransitionAlerts from "../../components/TransitionAlert";
+import {
+  login,
+  handleChangeData,
+  register,
+  getAllUser,
+  reset,
+  findUserById,
+  deleteUserById,
+  updateUserById,
+} from "../../features/users/userSlice";
 import { Role } from "../../utils/enum/role.enum";
 import Strings from "../../utils/Strings";
 
 function Register() {
-  
-  const {id} = useParams();
+  const { id } = useParams();
   const dispatch = useDispatch();
-  
-  const { users, isError, isSucces, isLoading, message } = useSelector(
+
+  const { users, singleUser,  isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.users
   );
-
-  console.log("get param register" + id);
-  // -------------------------------------------------------------- //
-  // handle check box state
-  const [activiateChecked, setChecked] = React.useState(true);
-
-  const handleActiveChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
-
-  // -------------------------------------------------------------- //
-  // handle role state
-  const [userRole, setRole] = React.useState(Role.User.toString());
-  const handleRoleChange = (event: SelectChangeEvent) => {
-    setRole(event.target.value as string);
-  };
 
   // -------------------------------------------------------------- //
   // handle formData
   const [formData, setFormData] = useState({
     //TODO register user field
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
-    isActive: activiateChecked,
-    role: userRole,
+    // TODO fix that and use state in whole screen
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
+    isActive: false,
+    role: Role.User,
   });
   // handle submit form
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    setFormData({
-      firstName: data.get("firstName")!.toString(),
-      lastName: data.get("lastName")!.toString(),
-      username: data.get("username")!.toString(),
-      email: data.get("email")!.toString(),
-      password: data.get("password")!.toString(),
-      isActive: activiateChecked,
-      role: userRole,
-    });
-    if(id === undefined){
-      console.log(`user id undefined`);
-      // register user done need to fix ui
-      dispatch(register(formData));
-      dispatch(reset);
-    } else {
-        // TODO check user name duplicates
-        console.log(`user id ${id}`);
-        // ----------------------------------------------------------------------- //
-        // git user by id
-        const currrentUserData = dispatch(findUserById(Number(id)));
-        console.log('=============' + dispatch(findUserById(Number(id))));
-        // ----------------------------------------------------------------------- //
-        // update user by id
-        dispatch(updateUserById({
-          id: Number(id),
-          firstName: data.get("firstName")!.toString(),
-          lastName: data.get("lastName")!.toString(),
-          username: data.get("username")!.toString(),
-          email: data.get("email")!.toString(),
-          password: data.get("password")!.toString(),
-          isActive: activiateChecked,
-          role: userRole,
-        }))
-        // ----------------------------------------------------------------------- //
+  
+    if (id === undefined) {
+      const singleUserObjectHasDataOrNot : boolean = Object.keys(singleUser).length > 0 && true; 
+      if(isError && singleUserObjectHasDataOrNot ){
+        console.log(isError)
+        console.log(message)
+        message.map((err: string, index: number) => {
+          console.log(err);
+        });
+      } else {
+        dispatch(register(singleUser));
+      }
+    }
+     else {
+      // update user by id
+      dispatch(updateUserById(singleUser));
+      // ----------------------------------------------------------------------- //
     }
 
-
-    // login user done need to fix ui
-    // dispatch(login({
-    //   username: 'string', 
-    //   password: 'string'
-    // }))
-
-    // get all user done need to fix ui
-    // TODO fix store data after refreshing
-    // dispatch(getAllUser())
-
-    // dispatch(deleteUserById(26))
-
-
-    
-    // dispatch(reset);
+    // {
+    //   // check user errors
+    //   isError ? (
+    //     message.map((err: string, index: number) => {
+    //       return (
+    //         <TransitionAlerts
+    //           key={index}
+    //           message={err}
+    //           severity={Severity.Error}
+    //         />
+    //       );
+    //     })
+    //   ) : (
+    //     <TransitionAlerts
+    //       message={Strings.userCreated}
+    //       severity={Severity.Success}
+    //     />
+    //   )
+    // }
   };
+
   // -------------------------------------------------------------- //
-  
   if (isLoading) {
     console.log("loading > > > ");
   }
-  // get value on every change in inputs
-  const onChange = (e: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
   // -------------------------------------------------------------- //
-
+  // get user data from id passed when register init
+  useEffect(() => {
+    // ----------------------------------------------------------------------- //
+    // git user by id
+    if (id != undefined) {
+      dispatch(findUserById(Number(id)));
+    } else{
+      dispatch(reset)
+      // console.log(users)
+    }
+    // ----------------------------------------------------------------------- //
+  }, []);
+  // ====================================================================================================== //
   return (
     <>
-      {/* {
-        isError ?
-          message.map((err: string, index : number) => {
-            return <TransitionAlerts key={index} message={err} severity={Severity.Error} />
-          })
-          : <TransitionAlerts  message={Strings.userCreated} severity={Severity.Success} />
-      } */}
+
 
       <CssBaseline />
       <Box
@@ -159,7 +139,15 @@ function Register() {
                 fullWidth
                 id="firstName"
                 label={Strings.firstName}
-                onChange={onChange}
+                value={singleUser["firstName"]}
+                onChange={(e) =>
+                  dispatch(
+                    handleChangeData({
+                      name: e.target.name,
+                      value: e.target.value,
+                    })
+                  )
+                }
                 autoFocus
               />
             </Grid>
@@ -169,8 +157,16 @@ function Register() {
                 fullWidth
                 id="lastName"
                 label={Strings.lastName}
+                value={singleUser["lastName"]}
+                onChange={(e) =>
+                  dispatch(
+                    handleChangeData({
+                      name: e.target.name,
+                      value: e.target.value,
+                    })
+                  )
+                }
                 name="lastName"
-                onChange={onChange}
                 autoComplete="family-name"
               />
             </Grid>
@@ -181,7 +177,15 @@ function Register() {
                 id="username"
                 label={Strings.userName}
                 name="username"
-                onChange={onChange}
+                value={singleUser["username"]}
+                onChange={(e) =>
+                  dispatch(
+                    handleChangeData({
+                      name: e.target.name,
+                      value: e.target.value,
+                    })
+                  )
+                }
                 autoComplete="email"
               />
             </Grid>
@@ -192,7 +196,15 @@ function Register() {
                 id="email"
                 label={Strings.email}
                 name="email"
-                onChange={onChange}
+                value={singleUser["email"]}
+                onChange={(e) =>
+                  dispatch(
+                    handleChangeData({
+                      name: e.target.name,
+                      value: e.target.value,
+                    })
+                  )
+                }
                 autoComplete="email"
               />
             </Grid>
@@ -202,9 +214,17 @@ function Register() {
                 fullWidth
                 name="password"
                 label={Strings.password}
+                value={singleUser["password"]}
+                onChange={(e) =>
+                  dispatch(
+                    handleChangeData({
+                      name: e.target.name,
+                      value: e.target.value,
+                    })
+                  )
+                }
                 type="password"
                 id="password"
-                onChange={onChange}
                 autoComplete="new-password"
               />
             </Grid>
@@ -214,11 +234,19 @@ function Register() {
                   {Strings.permission}
                 </InputLabel>
                 <Select
+                  name="role"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={userRole}
+                  value={singleUser["role"] == Role.Admin ? Role.Admin : Role.User}
                   label={Strings.permission}
-                  onChange={handleRoleChange}
+                  onChange={(e) =>
+                    dispatch(
+                      handleChangeData({
+                        name: e.target.name,
+                        value: e.target.value,
+                      })
+                    )
+                  }
                 >
                   <MenuItem value={Role.User}>{Strings.normalUser}</MenuItem>
                   <MenuItem value={Role.Admin}>{Strings.admin}</MenuItem>
@@ -231,8 +259,17 @@ function Register() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={activiateChecked}
-                    onChange={handleActiveChange}
+                    name="isActive"
+                    // checked={singleUser["isActive"]}
+                    value={singleUser["isActive"]}
+                    onChange={(e) =>
+                      dispatch(
+                        handleChangeData({
+                          name: e.target.name,
+                          value: e.target.checked,
+                        })
+                      )
+                    }
                   />
                 }
                 label={Strings.activeUser}
@@ -251,6 +288,7 @@ function Register() {
       </Box>
     </>
   );
+  // ====================================================================================================== //
 }
 
 export default Register;

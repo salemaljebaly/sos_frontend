@@ -34,11 +34,12 @@ export interface UserModelFromToken {
 // --------------------------------------------------- //
 // return user from redux state
 export interface UserState {
-  users: UsersModel[] | null;
+  users: UsersModel[] | Partial<UsersModel> | null;
+  singleUser : Partial<UsersModel> | null;
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;
-  message: string;
+  message: string[];
 }
 
 // --------------------------------------------------- //
@@ -49,9 +50,10 @@ export interface UsersModel {
   lastName: string;
   username: string;
   email: string;
+  password?: string;
   isActive: boolean;
-  createdAt: Date;
-  updateAt: Date;
+  createdAt?: Date;
+  updateAt?: Date;
   role: string;
 }
 // --------------------------------------------------- //

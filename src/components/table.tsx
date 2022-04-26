@@ -37,6 +37,8 @@ interface Props{
 
 export default function DataTable({data} : Props) {  
   const dispatch = useDispatch();
+  // TODO fix navigate when user delete
+  const navigate = useNavigate();
   // const { users, isError, isSucces, isLoading, message } = useSelector(
   //   (state: any) => state.users
   // );
@@ -45,9 +47,13 @@ export default function DataTable({data} : Props) {
 
 const handleDelete = (id : number) => {
   // TODO delete from users fix delete user
-
-  dispatch(deleteUserById(id));
-  alert('userDeleted' + id);
+  if(window.confirm(Strings.areYouSureToDelete)){
+    dispatch(deleteUserById(id));
+    navigate('/users');
+  } else {
+    
+    alert('user not deleted' + id);
+  }
 };
   // ---------------------------------------------------------------------------------- //
 // handle action [delete and view]

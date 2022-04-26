@@ -45,5 +45,8 @@ export default class{
     static updatedAt: string = "تاريخ التعديل";
     static fullName: string = "الأسم الكامل";
     static delete : string = "حذف";
+    // --------------------------------------------------------------- //
+    static no : string = "لا";
+    static areYouSureToDelete : string = "هل أنت متأكد من عملة الحذف";
 
 }
