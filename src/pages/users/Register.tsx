@@ -260,7 +260,7 @@ function Register() {
                 control={
                   <Checkbox
                     name="isActive"
-                    // checked={singleUser["isActive"]}
+                    checked={singleUser["isActive"]}
                     value={singleUser["isActive"]}
                     onChange={(e) =>
                       dispatch(
