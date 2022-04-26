@@ -48,5 +48,9 @@ export default class{
     // --------------------------------------------------------------- //
     static no : string = "لا";
     static areYouSureToDelete : string = "هل أنت متأكد من عملة الحذف";
+    static youCantUndoThisStep : string = "ملاحظة في حالة موافقتك على هذا الاجراء فأنك لن تستطيق التراجع";
+    // --------------------------------------------------------------- //
+    static unauthorized : string = "يرجى التاكد من بياناتك";
+  static youMustfillData: string = "يجب عليك تعبئة البيانات";
 
 }

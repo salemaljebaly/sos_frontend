@@ -7,14 +7,21 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Strings from "../../utils/Strings";
 
-interface Props {
+interface Dialog {
   isOpen: boolean;
   title: string;
-  message: string;
+  subTitle: string;
+  onConfrim : Function;
 }
+
+interface Props {
+  confirmDialog: Partial<Dialog>;
+  setConfirmDialog : Partial<Dialog>;
+}
+
+
 export default function AlertDialog(props: any) {
   const { confirmDialog, setConfirmDialog } = props;
-
 
   return (
     <div>
@@ -23,10 +30,10 @@ export default function AlertDialog(props: any) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{confirmDialog.title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {Strings.areYouSureToDelete}
+            {confirmDialog.subTitle}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
