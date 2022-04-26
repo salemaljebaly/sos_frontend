@@ -27,7 +27,7 @@ import { AccountCircle } from "@mui/icons-material";
 import theme from "../theme/theme";
 import DashBoardCards from "./dashBoardCards";
 import DataTable from "./table";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
 import { red } from "@mui/material/colors";
 import Register from "../pages/users/Register";
 import Dashboard from "../pages/Dashboard";
@@ -37,6 +37,9 @@ import About from "../pages/About";
 import PolicesOffices from "../pages/PolicesOffices";
 import Citizens from "../pages/Citizens";
 import Users from "../pages/users/Users";
+import { useDispatch, useSelector } from "react-redux";
+import SignIn from "./signIn";
+import { logout } from "../features/auth/authSlice";
 
 const drawerWidth = 240;
 
@@ -120,6 +123,23 @@ const linkStyle = {
 // -------------------------------------------------------------------------------- //
 
 export default function MiniDrawer() {
+
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // ----------------------------------------------------------------------------------- //
+  // desctruct memebers from user state [ userSlice]
+  const { user,  isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.auth
+  );
+  // ----------------------------------------------------------------------------------- //
+
+  React.useEffect(()=> {
+    if (!user) {
+      navigate('/login')
+    }
+  })
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -136,9 +156,18 @@ export default function MiniDrawer() {
     setAnchorEl(event.currentTarget);
   };
 
+  
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    dispatch(logout)
+    navigate('/login')
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -188,7 +217,7 @@ export default function MiniDrawer() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>{Strings.myProfile}</MenuItem>
-            <MenuItem onClick={handleClose}>{Strings.logout}</MenuItem>
+            <MenuItem onClick={handleLogout}>{Strings.logout}</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
@@ -282,6 +311,7 @@ export default function MiniDrawer() {
             </Route>
             <Route path="/register" element={<Register />} />
             <Route path='/reports' element={<Reports />} />
+            <Route path='/login' element={<SignIn />} />
             <Route path='/policesoffices' element={<PolicesOffices />} />
             <Route path='/about' element={<About />} />
           </Routes>

@@ -35,7 +35,7 @@ function Users() {
           maring: 16,
         }}
         onClick={() => {
-          dispatch(reset);
+          dispatch(reset)
           navigator("/register");
         }}
       >

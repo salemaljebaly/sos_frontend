@@ -26,6 +26,6 @@ export interface UserState {
     isError: boolean;
     isSucces: boolean;
     isLoading: boolean;
-    message: string;
+    message: string[] | string;
   }
   // --------------------------------------------------- //

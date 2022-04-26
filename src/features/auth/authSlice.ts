@@ -9,7 +9,7 @@ const initialState : UserState = {
   isError: false,
   isSucces: false,
   isLoading: false,
-  message: "",
+  message: [],
 };
 
 // login user
@@ -44,7 +44,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
-      state.message = "";
+      state.message = [];
     },
   },
   extraReducers: (builder) => {
@@ -62,12 +62,20 @@ export const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload as string; // get value when reject
-        console.log("from reject " + action.payload);
+        state.message = action.payload as string[]; // get value when reject
         state.user = null;
       })
       // ------------------------------------------------------------------ //
-      .addCase(logout.fulfilled, (state, action) => {
+      .addCase(logout.pending, (state) => {
+        state.user = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string[]; // get value when reject
         state.user = null;
       })
   },

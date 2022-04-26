@@ -17,19 +17,78 @@ import Strings from '../utils/Strings';
 import Copyright from './copyrights';
 import { red } from '@mui/material/colors';
 import AppLogo from './appLogo';
-
+import { login } from '../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Severity } from './SnackBar';
+import TransitionAlerts from './TransitionAlert';
+import AlertDialog from './common/ConfirmDialog';
 
 export default function SignIn() {
+  // ----------------------------------------------------------------------------------- //
+  // dispatch to get and executer function from slices
+  const dispatch = useDispatch();
+  // ----------------------------------------------------------------------------------- //
+  // use to navigate to another components 
+  const navigate = useNavigate();
+  // ----------------------------------------------------------------------------------- //
+  // desctruct memebers from user state [ userSlice]
+  const { user,  isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.auth
+  );
+  // ----------------------------------------------------------------------------------- //
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if(!(data.get('email')!.toString() == '' || data.get('password')!.toString() == '')){
+      dispatch(login({
+        username: data.get('email')!.toString(), 
+        password : data.get('password')!.toString()
+      }))
+      
+      if(user){
+        navigate('/users')
+      }
+    } else {
+      console.log(isError)
+      if(isError){
+        message.map((err: string) => {
+          console.log(err)
+        })
+        return;
+      }
+    }
+    // check if user redux state
   };
 
+  React.useEffect(() => {
+    if(user){
+      navigate('/users')
+    }
+  }, [])
+
+
   return (
+    <>
+    {/* {
+      // check user errors
+      isError ? (
+        message.map((err: string, index: number) => {
+          return (
+            <TransitionAlerts
+              key={index}
+              message={err}
+              severity={Severity.Error}
+            />
+          );
+        })
+      ) : (
+        <TransitionAlerts
+          message={Strings.userCreated}
+          severity={Severity.Success}
+        />
+      )
+    } */}
     <ThemeProvider theme={theme}>
 
       <Container component="main" maxWidth="xs" >
@@ -104,5 +163,6 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </>
   );
 }

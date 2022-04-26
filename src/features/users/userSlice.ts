@@ -205,7 +205,6 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
         state.users = null;
       })
       // ------------------------------------------------------------------ //

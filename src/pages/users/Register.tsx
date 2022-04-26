@@ -1,6 +1,8 @@
 import {
+  Backdrop,
   Button,
   Checkbox,
+  CircularProgress,
   CssBaseline,
   FormControl,
   FormControlLabel,
@@ -8,66 +10,59 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Severity } from "../../components/SnackBar";
 import TransitionAlerts from "../../components/TransitionAlert";
+import { login } from "../../features/auth/authSlice";
 import {
-  login,
   handleChangeData,
   register,
-  getAllUser,
   reset,
   findUserById,
-  deleteUserById,
   updateUserById,
 } from "../../features/users/userSlice";
 import { Role } from "../../utils/enum/role.enum";
 import Strings from "../../utils/Strings";
 
 function Register() {
+  // ----------------------------------------------------------------------------------- //
+  // get param from user url
   const { id } = useParams();
+  // ----------------------------------------------------------------------------------- //
+  // dispatch to get and executer function from slices
   const dispatch = useDispatch();
-
-  const { users, singleUser,  isError, isSucces, isLoading, message } = useSelector(
+  // ----------------------------------------------------------------------------------- //
+  // use to navigate to another components 
+  const navigate = useNavigate();
+  // ----------------------------------------------------------------------------------- //
+  // desctruct memebers from user state [ userSlice]
+  const { singleUser,  isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.users
   );
-
-  // -------------------------------------------------------------- //
-  // handle formData
-  const [formData, setFormData] = useState({
-    //TODO register user field
-    // TODO fix that and use state in whole screen
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    isActive: false,
-    role: Role.User,
-  });
+  // ----------------------------------------------------------------------------------- //
   // handle submit form
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
   
     if (id === undefined) {
-      const singleUserObjectHasDataOrNot : boolean = Object.keys(singleUser).length > 0 && true; 
-      if(isError && singleUserObjectHasDataOrNot ){
-        console.log(isError)
-        console.log(message)
-        message.map((err: string, index: number) => {
-          console.log(err);
-        });
-      } else {
-        dispatch(register(singleUser));
-      }
+
+      // const singleUserObjectHasDataOrNot : boolean = Object.keys(singleUser).length > 0 && true; 
+      // if(isError && singleUserObjectHasDataOrNot ){
+      //   console.log("you must enter data")
+      //   console.log(isError)
+      //   console.log(message)
+      //   message.map((err: string, index: number) => {
+      //     console.log(err);
+      //   });
+      // } else {
+      //   dispatch(register(singleUser));
+      // }
     }
      else {
       // update user by id
@@ -75,31 +70,10 @@ function Register() {
       // ----------------------------------------------------------------------- //
     }
 
-    // {
-    //   // check user errors
-    //   isError ? (
-    //     message.map((err: string, index: number) => {
-    //       return (
-    //         <TransitionAlerts
-    //           key={index}
-    //           message={err}
-    //           severity={Severity.Error}
-    //         />
-    //       );
-    //     })
-    //   ) : (
-    //     <TransitionAlerts
-    //       message={Strings.userCreated}
-    //       severity={Severity.Success}
-    //     />
-    //   )
-    // }
-  };
 
-  // -------------------------------------------------------------- //
-  if (isLoading) {
-    console.log("loading > > > ");
-  }
+  };
+  // ----------------------------------------------------------------------------------- //
+
   // -------------------------------------------------------------- //
   // get user data from id passed when register init
   useEffect(() => {
@@ -108,12 +82,26 @@ function Register() {
     if (id != undefined) {
       dispatch(findUserById(Number(id)));
     } else{
-      dispatch(reset)
+      // dispatch(reset)
       // console.log(users)
     }
     // ----------------------------------------------------------------------- //
   }, []);
   // ====================================================================================================== //
+
+    // -------------------------------------------------------------- //
+    // if (isLoading) {
+    //   return (
+    //     <div>
+    //     <Backdrop
+    //       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    //       open={true}
+    //     >
+    //       <CircularProgress color="inherit" />
+    //     </Backdrop>
+    //   </div>
+    //   )
+    // }
   return (
     <>
 
@@ -261,7 +249,7 @@ function Register() {
                   <Checkbox
                     name="isActive"
                     checked={singleUser["isActive"]}
-                    value={singleUser["isActive"]}
+                    // value={singleUser["isActive"]}
                     onChange={(e) =>
                       dispatch(
                         handleChangeData({
