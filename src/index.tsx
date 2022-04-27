@@ -12,6 +12,7 @@ import theme from "./theme/theme";
 import { CssBaseline } from "@mui/material";
 import createCache from '@emotion/cache';
 import stylisRTLPlugin from 'stylis-plugin-rtl';
+import { BrowserRouter } from "react-router-dom";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 // const clientSideEmotionCache = createEmotionCache();
@@ -35,7 +36,9 @@ root.render(
       <CssBaseline />
       <React.StrictMode>
         <Provider store={store}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </Provider>
       </React.StrictMode>
     </ThemeProvider>

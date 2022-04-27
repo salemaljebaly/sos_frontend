@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DataTable from "../../components/table";
 import { UsersModel } from "../../features/users/userModel";
-import { getAllUser, reset } from "../../features/users/userSlice";
+import {  getAllUser, reset, resetSingleUser } from "../../features/users/userSlice";
 import Strings from "../../utils/Strings";
 
 interface Props {
@@ -19,11 +19,20 @@ function Users() {
     (state: any) => state.users
   );
 
+  const { user } = useSelector(
+    (state: any) => state.auth
+  );
+
   let userData: UsersModel[] = users as UsersModel[];
 
   useEffect(() => {
-    dispatch(getAllUser());
-  }, []);
+    if(user){
+      dispatch(getAllUser());
+    } else {
+      navigator('/login')
+    }
+  }, [dispatch]);
+  console.log(users);
 
   return (
     // check of array of user has item then return table
@@ -35,13 +44,13 @@ function Users() {
           maring: 16,
         }}
         onClick={() => {
-          dispatch(reset)
+          dispatch(resetSingleUser());
           navigator("/register");
         }}
       >
         {Strings.addUser}
       </Button>
-      {userData.length > 0 ? (
+      {userData?.length > 0 ? (
         <DataTable data={userData} />
       ) : (
         <div>No data returned</div>

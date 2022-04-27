@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./userService";
 import { LoginModel, UserModel, UsersModel, UserState } from "./userModel";
+import { Role } from "../../utils/enum/role.enum";
 
 // Get user from local storage
 const user = JSON.parse(localStorage.getItem("user")!);
@@ -34,7 +35,7 @@ export const register = createAsyncThunk(
 // ------------------------------------------------------------------------------------------- //
 // login user
 export const login = createAsyncThunk(
-  "user/registlgoer",
+  "user/login",
   async (user: LoginModel, thunkAPI) => {
     try {
 
@@ -56,6 +57,7 @@ export const getAllUser = createAsyncThunk (
   "user/getAll",
   async (_, thunkAPI) => {
     try {
+      // TODO get token from redux state not local storage
       return await authService.getAllUsers(user.access_token.toString());
     } catch (error: any) {
       const message =
@@ -154,11 +156,18 @@ export const userSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      console.log('reseting ...')
       state.users = null;
+      state.singleUser = null;
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
+      state.message = [];
+    },
+    resetSingleUser: (state) => {
+      state.singleUser = {
+        isActive: false,
+        role : Role.User
+      };
       state.message = [];
     },
     // ------------------------------------------------------------------ //
@@ -283,5 +292,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset , handleChangeData} = userSlice.actions;
+export const { reset ,resetSingleUser, handleChangeData} = userSlice.actions;
 export default userSlice.reducer;

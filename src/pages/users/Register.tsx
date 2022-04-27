@@ -1,4 +1,5 @@
 import {
+  Alert,
   Backdrop,
   Button,
   Checkbox,
@@ -17,13 +18,10 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Severity } from "../../components/SnackBar";
-import TransitionAlerts from "../../components/TransitionAlert";
-import { login } from "../../features/auth/authSlice";
+import Notification from "../../components/common/Notification";
 import {
   handleChangeData,
   register,
-  reset,
   findUserById,
   updateUserById,
 } from "../../features/users/userSlice";
@@ -31,6 +29,13 @@ import { Role } from "../../utils/enum/role.enum";
 import Strings from "../../utils/Strings";
 
 function Register() {
+  // ------------------------------------------------------------------------------- //
+  // take state from props
+  const [notify, setNotify] = React.useState({
+    isOpen: false,
+    message: "",
+    type: "",
+  });
   // ----------------------------------------------------------------------------------- //
   // get param from user url
   const { id } = useParams();
@@ -38,39 +43,28 @@ function Register() {
   // dispatch to get and executer function from slices
   const dispatch = useDispatch();
   // ----------------------------------------------------------------------------------- //
-  // use to navigate to another components 
+  // use to navigate to another components
   const navigate = useNavigate();
   // ----------------------------------------------------------------------------------- //
   // desctruct memebers from user state [ userSlice]
-  const { singleUser,  isError, isSucces, isLoading, message } = useSelector(
+  const { singleUser, isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.users
   );
   // ----------------------------------------------------------------------------------- //
   // handle submit form
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    if (id === undefined) {
 
-      // const singleUserObjectHasDataOrNot : boolean = Object.keys(singleUser).length > 0 && true; 
-      // if(isError && singleUserObjectHasDataOrNot ){
-      //   console.log("you must enter data")
-      //   console.log(isError)
-      //   console.log(message)
-      //   message.map((err: string, index: number) => {
-      //     console.log(err);
-      //   });
-      // } else {
-      //   dispatch(register(singleUser));
-      // }
-    }
-     else {
+    if (id === undefined) {
+      const singleUserObjectHasDataOrNot: boolean =
+        Object.keys(singleUser).length > 0 && true;
+
+      dispatch(register(singleUser));
+    } else {
       // update user by id
       dispatch(updateUserById(singleUser));
       // ----------------------------------------------------------------------- //
     }
-
-
   };
   // ----------------------------------------------------------------------------------- //
 
@@ -81,30 +75,33 @@ function Register() {
     // git user by id
     if (id != undefined) {
       dispatch(findUserById(Number(id)));
-    } else{
-      // dispatch(reset)
-      // console.log(users)
     }
     // ----------------------------------------------------------------------- //
-  }, []);
+  }, [dispatch]);
   // ====================================================================================================== //
 
-    // -------------------------------------------------------------- //
-    // if (isLoading) {
-    //   return (
-    //     <div>
-    //     <Backdrop
-    //       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    //       open={true}
-    //     >
-    //       <CircularProgress color="inherit" />
-    //     </Backdrop>
-    //   </div>
-    //   )
-    // }
+  // -------------------------------------------------------------- //
+  if (isLoading) {
+    return (
+      <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </div>
+    )
+  }
   return (
     <>
-
+      
+      {/* {isError && message.map((error: any) => {
+          return <Alert severity="error" >{error[0]}</Alert>;
+        })} */}
+      {/* return first index in array */}
+      {isError && <Alert severity="error" >{message[0]}</Alert>}
+      
 
       <CssBaseline />
       <Box
@@ -225,7 +222,9 @@ function Register() {
                   name="role"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={singleUser["role"] == Role.Admin ? Role.Admin : Role.User}
+                  value={
+                    singleUser["role"] == Role.Admin ? Role.Admin : Role.User
+                  }
                   label={Strings.permission}
                   onChange={(e) =>
                     dispatch(
@@ -274,6 +273,8 @@ function Register() {
           </Button>
         </Box>
       </Box>
+
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   );
   // ====================================================================================================== //

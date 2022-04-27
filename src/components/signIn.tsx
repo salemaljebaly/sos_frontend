@@ -68,11 +68,7 @@ export default function SignIn() {
         password: data.get("password")!.toString(),
       })
     );
-
-    if (user) {
       navigate("/users");
-    }
-
     
     if (isError) {
       setNotify({
@@ -89,7 +85,7 @@ export default function SignIn() {
     if (user) {
       navigate("/users");
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

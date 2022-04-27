@@ -135,10 +135,10 @@ export default function MiniDrawer() {
   // ----------------------------------------------------------------------------------- //
 
   React.useEffect(()=> {
-    if (!user) {
+    if (!user) {  
       navigate('/login')
     }
-  })
+  }, [])
 
   const [open, setOpen] = React.useState(false);
 
@@ -158,6 +158,7 @@ export default function MiniDrawer() {
 
   
   const handleLogout = () => {
+    // TODO try to fix delete token form main function not here
     localStorage.removeItem('user')
     dispatch(logout)
     navigate('/login')
@@ -301,8 +302,7 @@ export default function MiniDrawer() {
         {/* <Box sx={{ marginBottom: 3 }} /> */}
         {/* <DataTable /> */}
         {/* <Register /> */}
-        
-          <Routes>
+        <Routes>
             <Route path='users' element={<Users />} >
               <Route path='profile:id' element={<Register />} />
             </Route>
