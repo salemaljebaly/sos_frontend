@@ -35,7 +35,7 @@ import Login from "../pages/users/Login";
 import Reports from "../pages/Reports";
 import About from "../pages/About";
 import PolicesOffices from "../pages/PolicesOffices";
-import Citizens from "../pages/Citizens";
+import Citizens from "../pages/citizens/Citizens";
 import Users from "../pages/users/Users";
 import { useDispatch, useSelector } from "react-redux";
 import SignIn from "./signIn";
@@ -309,6 +309,15 @@ export default function MiniDrawer() {
             <Route path='/user' element={<Register />} >
               <Route path=":id" element={<Register />} />
             </Route>
+
+            
+            <Route path='citizens' element={<Citizens />} >
+              <Route path='profile:id' element={<Register />} />
+            </Route>
+            <Route path='/citizen' element={<Register />} >
+              <Route path=":id" element={<Register />} />
+            </Route>
+
             <Route path="/register" element={<Register />} />
             <Route path='/reports' element={<Reports />} />
             <Route path='/login' element={<SignIn />} />

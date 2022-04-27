@@ -16,9 +16,10 @@ import { green, red } from "@mui/material/colors";
 import { deleteUserById } from "../features/users/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmDialog from "./common/ConfirmDialog";
+import { CitizensModel } from "../features/citizens/citizensModel";
 
 interface Props {
-  data: UsersModel[];
+  data: UsersModel[] | CitizensModel[];
 }
 
 export default function DataTable({ data }: Props) {
