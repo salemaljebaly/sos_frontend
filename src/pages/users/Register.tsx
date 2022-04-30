@@ -112,7 +112,7 @@ function Register() {
         }}
       >
         <Typography component="h1" variant="h5">
-          {Strings.addUser}
+            {id != undefined ? Strings.edit + Strings.user : Strings.add + Strings.user }
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -269,7 +269,7 @@ function Register() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            {Strings.addUser}
+            {id != undefined ? Strings.edit : Strings.add}
           </Button>
         </Box>
       </Box>

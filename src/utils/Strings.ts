@@ -14,7 +14,7 @@ export default class{
     static forgetPassword  :string = "نسيت كلمة المرور";
     static dontHaveAccount  :string = " ليس لديك حساب ؟ سجل الأن";
     static allRightsReserved: string = "جميع الحقوق محفوظة";
-    static addUser: string = "اضافة مستخدم";
+    static add: string = "اضافة";
     static firstName: string = "الأسم الأول";
     static lastName: string = "الأسم الأخير";
     static email: string = "الايميل";
@@ -24,6 +24,9 @@ export default class{
     static permission :string = "الصلاحية";
     static userCreated :string = "تم انشاء المستخدم";
     static userNotCreated :string = "توجد مشكلة في البيانات";
+    static edit : string = "تعديل";
+    static citizen : string = " مواطن ";
+    static user :string = " مستخدم ";
     // --------------------------------------------------------------- //
     // drawer menu items
     static menuMain: string = "الرئيسية";
@@ -52,5 +55,8 @@ export default class{
     // --------------------------------------------------------------- //
     static unauthorized : string = "يرجى التاكد من بياناتك";
   static youMustfillData: string = "يجب عليك تعبئة البيانات";
+  static phone: string = "رقم الهاتف";
+  static city: string = "المدينة";
+  static location: string = "الموقع";
 
 }

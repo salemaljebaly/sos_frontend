@@ -15,11 +15,11 @@ const initialState : UserState = {
 
 // ------------------------------------------------------------------------------------------- //
 // Register citizen
-export const register = createAsyncThunk(
-  "citizen/register",
+export const add = createAsyncThunk(
+  "citizen/add",
   async (citizen: CitizenModel, thunkAPI) => {
     try {
-      return await authService.register(citizen);
+      return await authService.add(citizen);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -52,13 +52,12 @@ export const login = createAsyncThunk(
 );
 // ------------------------------------------------------------------------------------------- //
 // get all citizens
-export const getAllCitizens = createAsyncThunk (
+export const getAll = createAsyncThunk (
   "citizen/getAll",
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      console.log(citizen.access_token.toString());
-      return await authService.getAllCitizens(citizen.access_token.toString());
+      return await authService.getAll(citizen.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -73,11 +72,11 @@ export const getAllCitizens = createAsyncThunk (
 
 // ------------------------------------------------------------------------------------------- //
 // delete citizen by id
-export const deleteUserById = createAsyncThunk (
-  "citizen/deleteUserByID",
+export const deleteById = createAsyncThunk (
+  "citizen/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteCitizenById(citizen.access_token.toString(), id);
+      return await authService.deleteById(citizen.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -92,12 +91,12 @@ export const deleteUserById = createAsyncThunk (
 
 // ------------------------------------------------------------------------------------------- //
 // update citizen by id
-export const updateUserById = createAsyncThunk (
-  "citizen/updateUserById",
+export const updateById = createAsyncThunk (
+  "citizen/updateById",
   async (citizenData : Partial<CitizenModel>, thunkAPI) => {
     try {
       const {id, ...fields} = citizenData;
-      return await authService.updateCitizenById(citizen.access_token.toString(), id!, fields);
+      return await authService.updateById(citizen.access_token.toString(), id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -111,12 +110,12 @@ export const updateUserById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // update citizen by id
-export const findUserById = createAsyncThunk (
-  "citizen/findUserById",
+export const findById = createAsyncThunk (
+  "citizen/findById",
   async (id : number, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.findCitizenByID(citizen.access_token.toString(), id);
+      return await authService.findByID(citizen.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -130,12 +129,12 @@ export const findUserById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // update citizen by id
-export const searchInUsers = createAsyncThunk (
-  "citizen/searchInUsers",
+export const searchIn = createAsyncThunk (
+  "citizen/searchIn",
   async (keyword : string, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.searchInCitizens(citizen.access_token.toString(), keyword);
+      return await authService.searchIn(citizen.access_token.toString(), keyword);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -163,7 +162,7 @@ export const citizenSlice = createSlice({
       state.isError = false;
       state.message = [];
     },
-    resetSingleCitizen: (state) => {
+    resetSingle: (state) => {
       state.singleCitizen = {
         isActive: false,
       };
@@ -172,7 +171,7 @@ export const citizenSlice = createSlice({
     // ------------------------------------------------------------------ //
     // use this function to changes in data 
     handleChangeData : (state ,action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       state.singleCitizen = {
         ...state.singleCitizen, 
         [action.payload.name] : action.payload.value
@@ -184,16 +183,15 @@ export const citizenSlice = createSlice({
     builder
       // ------------------------------------------------------------------ //
       // register
-      .addCase(register.pending, (state) => {
+      .addCase(add.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(add.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.citizens = action.payload;
-        console.log(action.payload)
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(add.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
@@ -201,15 +199,15 @@ export const citizenSlice = createSlice({
       })
       // ------------------------------------------------------------------ //
       // get All citizen
-      .addCase(getAllCitizens.pending, (state) => {
+      .addCase(getAll.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllCitizens.fulfilled, (state, action) => {
+      .addCase(getAll.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.citizens = action.payload;
       })
-      .addCase(getAllCitizens.rejected, (state, action) => {
+      .addCase(getAll.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
@@ -218,78 +216,74 @@ export const citizenSlice = createSlice({
       // ------------------------------------------------------------------ //
       // update citizen by id
       // TODO return fix  update message 
-      .addCase(updateUserById.pending, (state) => {
+      .addCase(updateById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(updateUserById.fulfilled, (state, action) => {
+      .addCase(updateById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.citizens = action.payload;
       })
-      .addCase(updateUserById.rejected, (state, action) => {
+      .addCase(updateById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
         state.citizens = null;
       })
       // ------------------------------------------------------------------ //
       // find citizen by id
       // TODO return fix  delete message 
-      .addCase(findUserById.pending, (state) => {
+      .addCase(findById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(findUserById.fulfilled, (state, action) => {
+      .addCase(findById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.singleCitizen =  action.payload;
       })
-      .addCase(findUserById.rejected, (state, action) => {
+      .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
         state.singleCitizen = null;
       })
       // ------------------------------------------------------------------ //
       // find citizen by id
       // TODO return fix  delete message 
-      .addCase(searchInUsers.pending, (state) => {
+      .addCase(searchIn.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(searchInUsers.fulfilled, (state, action) => {
+      .addCase(searchIn.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.citizens = action.payload;
       })
-      .addCase(searchInUsers.rejected, (state, action) => {
+      .addCase(searchIn.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
         state.citizens = null;
       })
       // ------------------------------------------------------------------ //
       // delete citizen by id
       // TODO return fix  delete message 
-      .addCase(deleteUserById.pending, (state) => {
+      .addCase(deleteById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteUserById.fulfilled, (state, action) => {
+      .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.citizens = action.payload;
       })
-      .addCase(deleteUserById.rejected, (state, action) => {
+      .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
         state.citizens = null;
       })
       // ------------------------------------------------------------------ //
   },
 });
 
-export const { reset ,resetSingleCitizen, handleChangeData} = citizenSlice.actions;
+export const { reset ,resetSingle, handleChangeData} = citizenSlice.actions;
 export default citizenSlice.reducer;

@@ -40,6 +40,7 @@ import Users from "../pages/users/Users";
 import { useDispatch, useSelector } from "react-redux";
 import SignIn from "./signIn";
 import { logout } from "../features/auth/authSlice";
+import AddCitizen from "../pages/citizens/addCitizen";
 
 const drawerWidth = 240;
 
@@ -304,18 +305,15 @@ export default function MiniDrawer() {
         {/* <Register /> */}
         <Routes>
             <Route path='users' element={<Users />} >
-              <Route path='profile:id' element={<Register />} />
             </Route>
             <Route path='/user' element={<Register />} >
               <Route path=":id" element={<Register />} />
             </Route>
 
             
-            <Route path='citizens' element={<Citizens />} >
-              <Route path='profile:id' element={<Register />} />
-            </Route>
-            <Route path='/citizen' element={<Register />} >
-              <Route path=":id" element={<Register />} />
+            <Route path='citizens' element={<Citizens />} />
+            <Route path='citizen' element={<AddCitizen />} >
+              <Route path=':id' element={<AddCitizen />} />
             </Route>
 
             <Route path="/register" element={<Register />} />

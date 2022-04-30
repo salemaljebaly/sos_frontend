@@ -26,66 +26,27 @@ export const userColumns: GridColDef[] = [
   ];
 
 
-  interface Data {
-    calories: number;
-    carbs: number;
-    fat: number;
-    name: string;
-    protein: number;
-  }
   
-  function createData(
-    id: number,
-    email: string,
-    firstName: string,
-    isActive: boolean,
-    lastName: string,
-    password: string,
-    role: string,
-    username: string,
-  ): UserModel {
-    return {
-      id,
-      email,
-      firstName,
-      isActive,
-      lastName,
-      password,
-      role,
-      username,
-    };
-  }
-  
-  interface HeadCell {
-    disablePadding: boolean;
-    id: keyof UserModel;
-    label: string;
-  }
-
-export const headCells: readonly HeadCell[] = [
-    {
-      id: 'id',
-      disablePadding: true,
-      label:  Strings.id,
-    },
-    {
-      id: 'firstName',
-      disablePadding: true,
-      label:  Strings.fullName,
-    },
-    {
-      id: 'email',
-      disablePadding: true,
-      label:  Strings.email.toString(),
-    },
-    {
-      id: 'isActive',
-      disablePadding: true,
-      label:  Strings.isActive.toString(),
-    },
-    {
-      id: 'role',
-      disablePadding: true,
-      label:  Strings.permission.toString(),
-    },
-  ];
+export const citizensColumns: GridColDef[] = [
+  { field: 'id', headerName: Strings.id, width: 70 },
+  // { field: 'firstName', headerName: Strings.firstName.toString(), width: 130 },
+  // { field: 'lastName', headerName: Strings.lastName.toString(), width: 130 },
+  {
+    field: 'fullName',
+    headerName: Strings.fullName,
+    width: 200,
+    valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.firstName  || ''} ${params.row.lastName || ''}`,
+  },
+  { field: 'email', headerName: Strings.email.toString(), width: 200 },
+  { field: 'phone', headerName: Strings.phone.toString(), width: 200 },
+  { field: 'city', headerName: Strings.city.toString(), width: 200 },
+  { field: 'isActive', headerName: Strings.isActive.toString(), width: 130 , 
+  valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.isActive ? 'مفعل' : 'غير مفعل'}`,
+},
+  { field: 'location', headerName: Strings.location.toString(), width: 130 ,
+  valueGetter: (params: GridValueGetterParams) =>
+      `${params.row.longitude + params.row.latitude}`,
+},
+];

@@ -5,8 +5,8 @@ import { LoginModel, CitizenModel, CitizenModelFromToken, CitizensModel } from "
 const API_URL = 'http://localhost:4000/';
 const path = 'citizens';
 
-// Register user
-const register = async (userData:CitizenModel) => {
+// Register citizen
+const add = async (userData:CitizenModel) => {
     const response = await axios.post(API_URL + path , userData);
 
     if(response.data){
@@ -31,7 +31,7 @@ const login = async (userData:LoginModel) => {
 }
 
 // get all user
-const getAllCitizens = async (access_token: string) => {
+const getAll = async (access_token: string) => {
     const config = {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -49,7 +49,7 @@ const getAllCitizens = async (access_token: string) => {
 
 
 // update user from database
-const updateCitizenById  = async (access_token: string, id : number, userData:Partial<CitizenModel>) => {
+const updateById  = async (access_token: string, id : number, userData:Partial<CitizenModel>) => {
     
     const config = {
         headers: {
@@ -57,12 +57,12 @@ const updateCitizenById  = async (access_token: string, id : number, userData:Pa
         },
       }
     const response = await axios.patch(API_URL + path + '/' + id,userData, config);
-    const retrunCitizenData  = findCitizenByID(access_token, id);
+    const retrunCitizenData  = findByID(access_token, id);
     return retrunCitizenData;
 }
 
 // update user from database
-const findCitizenByID  = async (access_token: string, id : number) => {
+const findByID  = async (access_token: string, id : number) => {
     
     const config = {
         headers: {
@@ -75,7 +75,7 @@ const findCitizenByID  = async (access_token: string, id : number) => {
 }
 
 // delete user from database
-const deleteCitizenById  = async (access_token: string, id : number) => {
+const deleteById  = async (access_token: string, id : number) => {
     
     const config = {
         headers: {
@@ -88,7 +88,7 @@ const deleteCitizenById  = async (access_token: string, id : number) => {
 }
 
 // delete user from database
-const searchInCitizens  = async (access_token: string, keyword : string) => {
+const searchIn  = async (access_token: string, keyword : string) => {
     
   const config = {
       headers: {
@@ -108,13 +108,13 @@ const logout = () => {
 }
 
 const authService = {
-    register,
+   add,
     login,
-    getAllCitizens,
-    deleteCitizenById,
-    updateCitizenById, 
-    findCitizenByID,
-    searchInCitizens,
+    getAll,
+    deleteById,
+    updateById, 
+    findByID,
+    searchIn,
     logout
 }
 
