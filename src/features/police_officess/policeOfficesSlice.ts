@@ -3,7 +3,7 @@ import authService from "./policeOfficesService";
 import { PoliceOfficesState, PolicOfficeModel } from "./policeOfficesModel";
 
 // Get PoliceOffices from local storage
-const PoliceOffices = JSON.parse(localStorage.getItem("user")!);
+const user = JSON.parse(localStorage.getItem("user")!);
 const initialState : PoliceOfficesState = {
   PoliceOffices: [], // check if there is PoliceOffices
   singleOffice : {},
@@ -19,7 +19,7 @@ export const add = createAsyncThunk(
   "PoliceOffices/add",
   async (PoliceOffices: PolicOfficeModel, thunkAPI) => {
     try {
-      return await authService.add(PoliceOffices);
+      return await authService.add(PoliceOffices, user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -38,7 +38,7 @@ export const getAll = createAsyncThunk (
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.getAll(PoliceOffices.access_token.toString());
+      return await authService.getAll(user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -57,7 +57,7 @@ export const deleteById = createAsyncThunk (
   "PoliceOffices/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(PoliceOffices.access_token.toString(), id);
+      return await authService.deleteById(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -77,7 +77,7 @@ export const updateById = createAsyncThunk (
   async (PoliceOfficesData : Partial<PolicOfficeModel>, thunkAPI) => {
     try {
       const {id, ...fields} = PoliceOfficesData;
-      return await authService.updateById(PoliceOffices.access_token.toString(), id!, fields);
+      return await authService.updateById(user.access_token.toString(), id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -96,7 +96,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find PoliceOffices works
-      return await authService.findByID(PoliceOffices.access_token.toString(), id);
+      return await authService.findByID(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -172,6 +172,8 @@ export const PoliceOfficesSlice = createSlice({
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
         state.PoliceOffices = null;
+        
+        console.log(action.payload);
       })
       // ------------------------------------------------------------------ //
       // update PoliceOffices by id
@@ -200,12 +202,15 @@ export const PoliceOfficesSlice = createSlice({
         state.isLoading = false;
         state.isSucces = true;
         state.singleOffice =  action.payload;
+        console.log(action.payload)
       })
       .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
         state.singleOffice = null;
+        
+        console.log(action.payload)
       })
       // ------------------------------------------------------------------ //
       // delete PoliceOffices by id

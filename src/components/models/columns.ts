@@ -27,24 +27,35 @@ export const userColumns: GridColDef[] = [
 
 
   
-export const citizensColumns: GridColDef[] = [
-  { field: 'id', headerName: Strings.id, width: 70 },
-  // { field: 'firstName', headerName: Strings.firstName.toString(), width: 130 },
-  // { field: 'lastName', headerName: Strings.lastName.toString(), width: 130 },
-  {
-    field: 'fullName',
-    headerName: Strings.fullName,
-    width: 200,
+  export const citizensColumns: GridColDef[] = [
+    { field: 'id', headerName: Strings.id, width: 70 },
+    // { field: 'firstName', headerName: Strings.firstName.toString(), width: 130 },
+    // { field: 'lastName', headerName: Strings.lastName.toString(), width: 130 },
+    {
+      field: 'fullName',
+      headerName: Strings.fullName,
+      width: 200,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.firstName  || ''} ${params.row.lastName || ''}`,
+    },
+    { field: 'email', headerName: Strings.email.toString(), width: 200 },
+    { field: 'phone', headerName: Strings.phone.toString(), width: 200 },
+    { field: 'city', headerName: Strings.city.toString(), width: 200 },
+    { field: 'isActive', headerName: Strings.isActive.toString(), width: 130 , 
     valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName  || ''} ${params.row.lastName || ''}`,
+        `${params.row.isActive ? 'مفعل' : 'غير مفعل'}`,
   },
-  { field: 'email', headerName: Strings.email.toString(), width: 200 },
-  { field: 'phone', headerName: Strings.phone.toString(), width: 200 },
-  { field: 'city', headerName: Strings.city.toString(), width: 200 },
-  { field: 'isActive', headerName: Strings.isActive.toString(), width: 130 , 
-  valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.isActive ? 'مفعل' : 'غير مفعل'}`,
-},
+    { field: 'location', headerName: Strings.location.toString(), width: 130 ,
+    valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.longitude + params.row.latitude}`,
+  },
+  ];
+
+  
+export const PoliceOfficesColumns: GridColDef[] = [
+  { field: 'id', headerName: Strings.id, width: 70 },
+  { field: 'office_name', headerName: Strings.office_name.toString(), width: 200 },
+  { field: 'office_city', headerName: Strings.city.toString(), width: 200 },
   { field: 'location', headerName: Strings.location.toString(), width: 130 ,
   valueGetter: (params: GridValueGetterParams) =>
       `${params.row.longitude + params.row.latitude}`,

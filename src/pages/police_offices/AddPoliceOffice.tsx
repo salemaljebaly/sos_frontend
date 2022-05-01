@@ -24,11 +24,10 @@ import {
     add,
     findById,
     updateById,
-  } from "../../features/citizens/citizensSlice";
-  import { Role } from "../../utils/enum/role.enum";
+  } from "../../features/police_officess/policeOfficesSlice";
   import Strings from "../../utils/Strings";
   
-  function AddCitizen() {
+  function AddPoliceOffice() {
     // ------------------------------------------------------------------------------- //
     // take state from props
     const [notify, setNotify] = React.useState({
@@ -47,8 +46,8 @@ import {
     const navigate = useNavigate();
     // ----------------------------------------------------------------------------------- //
     // desctruct memebers from user state [ userSlice]
-    const { singleCitizen, isError, isSucces, isLoading, message } = useSelector(
-      (state: any) => state.citizen
+    const { singleOffice, isError, isSucces, isLoading, message } = useSelector(
+      (state: any) => state.policeOffices
     );
     // ----------------------------------------------------------------------------------- //
     // handle submit form
@@ -57,12 +56,12 @@ import {
   
       if (id === undefined) {
         const singleUserObjectHasDataOrNot: boolean =
-          Object.keys(singleCitizen).length > 0 && true;
+          Object.keys(singleOffice).length > 0 && true;
   
-        dispatch(add(singleCitizen));
+        dispatch(add(singleOffice));
       } else {
         // update user by id
-        dispatch(updateById(singleCitizen));
+        dispatch(updateById(singleOffice));
         // ----------------------------------------------------------------------- //
       }
     };
@@ -71,11 +70,10 @@ import {
     // -------------------------------------------------------------- //
     // get user data from id passed when register init
     useEffect(() => {
-        console.log('add citizen')
+      console.log('useEffect')
       // ----------------------------------------------------------------------- //
       // git user by id
       if (id != undefined) {
-          console.log('citizen is ' + id);
         dispatch(findById(Number(id)));
       }
       // ----------------------------------------------------------------------- //
@@ -110,19 +108,19 @@ import {
           }}
         >
           <Typography component="h1" variant="h5">
-            {id != undefined ? Strings.edit + Strings.citizen : Strings.add + Strings.citizen }
+            {id != undefined ? Strings.edit + Strings.police_office : Strings.add + Strings.police_office }
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="office_name"
                   required
                   fullWidth
-                  id="firstName"
-                  label={Strings.firstName}
-                  value={singleCitizen["firstName"]}
+                  id="office_name"
+                  label={Strings.office_name}
+                  value={singleOffice["office_name"]}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({
@@ -138,9 +136,9 @@ import {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label={Strings.lastName}
-                  value={singleCitizen["lastName"]}
+                  id="office_city"
+                  label={Strings.city}
+                  value={singleOffice["office_city"]}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({
@@ -149,131 +147,11 @@ import {
                       })
                     )
                   }
-                  name="lastName"
+                  name="office_city"
                   autoComplete="family-name"
                 />
               </Grid>
               
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="city"
-                  required
-                  fullWidth
-                  id="city"
-                  label={Strings.city}
-                  value={singleCitizen["city"]}
-                  onChange={(e) =>
-                    dispatch(
-                      handleChangeData({
-                        name: e.target.name,
-                        value: e.target.value,
-                      })
-                    )
-                  }
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="phone"
-                  label={Strings.phone}
-                  value={singleCitizen["phone"]}
-                  onChange={(e) =>
-                    dispatch(
-                      handleChangeData({
-                        name: e.target.name,
-                        value: e.target.value,
-                      })
-                    )
-                  }
-                  name="phone"
-                  autoComplete="family-name"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label={Strings.userName}
-                  name="username"
-                  value={singleCitizen["username"]}
-                  onChange={(e) =>
-                    dispatch(
-                      handleChangeData({
-                        name: e.target.name,
-                        value: e.target.value,
-                      })
-                    )
-                  }
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label={Strings.email}
-                  name="email"
-                  value={singleCitizen["email"]}
-                  onChange={(e) =>
-                    dispatch(
-                      handleChangeData({
-                        name: e.target.name,
-                        value: e.target.value,
-                      })
-                    )
-                  }
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label={Strings.password}
-                  value={singleCitizen["password"]}
-                  onChange={(e) =>
-                    dispatch(
-                      handleChangeData({
-                        name: e.target.name,
-                        value: e.target.value,
-                      })
-                    )
-                  }
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-  
-              <Grid item xs={12}>
-                {/* TODO check check box boolean */}
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="isActive"
-                      checked={singleCitizen["isActive"]}
-                      // value={singleUser["isActive"]}
-                      onChange={(e) =>
-                        dispatch(
-                          handleChangeData({
-                            name: e.target.name,
-                            value: e.target.checked,
-                          })
-                        )
-                      }
-                    />
-                  }
-                  label={Strings.activeUser}
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -292,5 +170,5 @@ import {
     // ====================================================================================================== //
   }
   
-  export default AddCitizen;
+  export default AddPoliceOffice;
   

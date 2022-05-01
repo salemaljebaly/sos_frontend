@@ -34,7 +34,8 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/users/Login";
 import Reports from "../pages/Reports";
 import About from "../pages/About";
-import PolicesOffices from "../pages/PolicesOffices";
+import PolicesOffices from "../pages/police_offices/PoliceOffices";
+import AddPoliceOffice from "../pages/police_offices/AddPoliceOffice";
 import Citizens from "../pages/citizens/Citizens";
 import Users from "../pages/users/Users";
 import { useDispatch, useSelector } from "react-redux";
@@ -275,7 +276,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
 
-          <Link to="/policesoffices" style={linkStyle}>
+          <Link to="/police-offices" style={linkStyle}>
             <ListItem button>
               <ListItemIcon>
                 <LocalPoliceIcon sx={{color: linkColor}}/>
@@ -316,6 +317,11 @@ export default function MiniDrawer() {
               <Route path=':id' element={<AddCitizen />} />
             </Route>
 
+
+            <Route path='police-offices' element={<PolicesOffices />} />
+            <Route path='police-office' element={<AddPoliceOffice />} >
+              <Route path=':id' element={<AddPoliceOffice />} />
+            </Route>
             <Route path="/register" element={<Register />} />
             <Route path='/reports' element={<Reports />} />
             <Route path='/login' element={<SignIn />} />

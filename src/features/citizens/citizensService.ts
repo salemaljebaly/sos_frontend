@@ -6,8 +6,13 @@ const API_URL = 'http://localhost:4000/';
 const path = 'citizens';
 
 // Register citizen
-const add = async (userData:CitizenModel) => {
-    const response = await axios.post(API_URL + path , userData);
+const add = async (userData:CitizenModel, access_token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  }
+    const response = await axios.post(API_URL + path , userData, config);
 
     if(response.data){
         localStorage.setItem('user', JSON.stringify(response.data));

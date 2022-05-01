@@ -58,5 +58,7 @@ export default class{
   static phone: string = "رقم الهاتف";
   static city: string = "المدينة";
   static location: string = "الموقع";
+  static office_name : string = " اسم المركز ";
+  static police_office : string = " مركز شرطة ";
 
 }

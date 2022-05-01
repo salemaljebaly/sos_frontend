@@ -96,11 +96,7 @@ function Register() {
   return (
     <>
       
-      {/* {isError && message.map((error: any) => {
-          return <Alert severity="error" >{error[0]}</Alert>;
-        })} */}
-      {/* return first index in array */}
-      {isError && <Alert severity="error" >{message[0]}</Alert>}
+      {isError ? <Alert severity="error" >{Array.isArray(message) ?  message[0] : message}</Alert> : null}
       
 
       <CssBaseline />

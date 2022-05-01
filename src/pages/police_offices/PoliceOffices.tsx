@@ -2,29 +2,28 @@ import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { userColumns } from "../../components/models/columns";
 import DataTable from "../../components/table";
+import { CitizensModel } from "../../features/citizens/citizensModel";
 import { UsersModel } from "../../features/users/userModel";
-import {  deleteUserById, getAllUser, reset, resetSingleUser } from "../../features/users/userSlice";
+import {  deleteById, getAll, reset, resetSingle } from "../../features/police_officess/policeOfficesSlice";
 import Strings from "../../utils/Strings";
+import { citizensColumns, PoliceOfficesColumns } from "../../components/models/columns";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import { green, red } from "@mui/material/colors";
 import {
-  DeleteForeverOutlined,
-  DeleteForeverRounded,
-  DeleteOutlineRounded,
   DeleteRounded,
   RemoveRedEye,
 } from "@mui/icons-material";
 
 import ConfirmDialog from "../../components/common/ConfirmDialog";
+import { PoliceOfficesModel } from "../../features/police_officess/policeOfficesModel";
 
 interface Props {
   userData: UsersModel[];
 }
 
-function Users() {
+function PoliceOffices() {
   
   const navigate = useNavigate();
   // ---------------------------------------------------------------------------------- //
@@ -35,26 +34,26 @@ function Users() {
     onConfirm : () => {}
   });
   // ---------------------------------------------------------------------------------- //
-  const navigator = useNavigate();
+
   const dispatch = useDispatch();
-  const { users, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.users
+  const { PoliceOffices, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.policeOffices
   );
 
   const { user } = useSelector(
     (state: any) => state.auth
   );
 
-  let userData: UsersModel[] = users as UsersModel[];
+  let data: PoliceOfficesModel[] = PoliceOffices as PoliceOfficesModel[];
 
   useEffect(() => {
     if(user){
-      dispatch(getAllUser());
+      dispatch(getAll());
     } else {
-      navigator('/login')
+      navigate('/login')
     }
   }, [dispatch]);
-  
+
   // ---------------------------------------------------------------------------------- //
   const handleDelete = (id: number) => {
     // TODO delete from users fix delete user
@@ -62,9 +61,9 @@ function Users() {
       ...confirmDialog,
       isOpen: false,
     });
-    dispatch(deleteUserById(id));
-    dispatch(getAllUser());
-    navigate("/users");
+    dispatch(deleteById(id));
+    dispatch(getAll());
+    navigate("/police-offices");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]
@@ -77,7 +76,7 @@ function Users() {
         return (
           <Box className="cellAction">
             <Link
-              to={`/user/${params.row.id}`}
+              to={`/police-office/${params.row.id}`}
               style={{ textDecoration: "none" }}
             >
               <RemoveRedEye
@@ -117,18 +116,19 @@ function Users() {
           maring: 16,
         }}
         onClick={() => {
-          dispatch(resetSingleUser());
-          navigator("/register");
+          dispatch(resetSingle());
+          navigate("/police-office");
         }}
       >
-        {Strings.add + Strings.user}
+        {Strings.add + Strings.citizen }
       </Button>
-      {userData?.length > 0 ? (
-        <DataTable row={userColumns} data={userData} action={actionColumn} />
+      {data?.length > 0 ? (
+        <DataTable row={PoliceOfficesColumns} data={data} action={actionColumn}/>
       ) : (
         <div>No data returned</div>
       )}
-            <ConfirmDialog
+
+<ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />
@@ -136,4 +136,4 @@ function Users() {
   );
 }
 
-export default Users;
+export default PoliceOffices;

@@ -45,7 +45,6 @@ function Citizens() {
 
   let citizenData: CitizensModel[] = citizens as CitizensModel[];
 
-  console.log(citizens);
   useEffect(() => {
     if(user){
       dispatch(getAll());
@@ -53,7 +52,6 @@ function Citizens() {
       navigate('/login')
     }
   }, [dispatch]);
-  console.log(citizens);
 
   // ---------------------------------------------------------------------------------- //
   const handleDelete = (id: number) => {
@@ -118,7 +116,7 @@ function Citizens() {
         }}
         onClick={() => {
           dispatch(resetSingle());
-          navigate("/register");
+          navigate("/citizen");
         }}
       >
         {Strings.add + Strings.citizen }

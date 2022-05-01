@@ -15,9 +15,10 @@ import { Box } from "@mui/system";
 import { green, red } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { CitizensModel } from "../features/citizens/citizensModel";
+import { PolicOfficeModel } from "../features/police_officess/policeOfficesModel";
 
 interface Props {
-  data: UsersModel[] | CitizensModel[];
+  data: UsersModel[] | CitizensModel[] | PolicOfficeModel[];
   row : GridColDef[];
   action : any;
 }

@@ -3,7 +3,7 @@ import authService from "./citizensService";
 import { LoginModel, CitizenModel, UserState } from "./citizensModel";
 
 // Get citizen from local storage
-const citizen = JSON.parse(localStorage.getItem("user")!);
+const user = JSON.parse(localStorage.getItem("user")!);
 const initialState : UserState = {
   citizens: [], // check if there is citizen
   singleCitizen : {},
@@ -19,7 +19,7 @@ export const add = createAsyncThunk(
   "citizen/add",
   async (citizen: CitizenModel, thunkAPI) => {
     try {
-      return await authService.add(citizen);
+      return await authService.add(citizen, user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -57,7 +57,7 @@ export const getAll = createAsyncThunk (
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.getAll(citizen.access_token.toString());
+      return await authService.getAll(user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -76,7 +76,7 @@ export const deleteById = createAsyncThunk (
   "citizen/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(citizen.access_token.toString(), id);
+      return await authService.deleteById(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -96,7 +96,7 @@ export const updateById = createAsyncThunk (
   async (citizenData : Partial<CitizenModel>, thunkAPI) => {
     try {
       const {id, ...fields} = citizenData;
-      return await authService.updateById(citizen.access_token.toString(), id!, fields);
+      return await authService.updateById(user.access_token.toString(), id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -115,7 +115,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.findByID(citizen.access_token.toString(), id);
+      return await authService.findByID(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -134,7 +134,7 @@ export const searchIn = createAsyncThunk (
   async (keyword : string, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.searchIn(citizen.access_token.toString(), keyword);
+      return await authService.searchIn(user.access_token.toString(), keyword);
     } catch (error: any) {
       const message =
         (error.response &&
