@@ -24,10 +24,10 @@ import {
     add,
     findById,
     updateById,
-  } from "../../features/police_officess/policeOfficesSlice";
+  } from "../../features/about/aboutSlice";
   import Strings from "../../utils/Strings";
   
-  function AddPoliceOffice() {
+  function AddAbout() {
     // ------------------------------------------------------------------------------- //
     // take state from props
     const [notify, setNotify] = React.useState({
@@ -46,8 +46,8 @@ import {
     const navigate = useNavigate();
     // ----------------------------------------------------------------------------------- //
     // desctruct memebers from user state [ userSlice]
-    const { singleOffice, isError, isSucces, isLoading, message, processDone } = useSelector(
-      (state: any) => state.policeOffices
+    const { singleAbout, isError, isSucces, isLoading, message, processDone } = useSelector(
+      (state: any) => state.about
     );
     // ----------------------------------------------------------------------------------- //
     // handle submit form
@@ -56,22 +56,21 @@ import {
   
       if (id === undefined) {
         const singleUserObjectHasDataOrNot: boolean =
-          Object.keys(singleOffice).length > 0 && true;
+          Object.keys(singleAbout).length > 0 && true;
   
-        dispatch(add(singleOffice));
+        dispatch(add(singleAbout));
+
       } else {
         // update user by id
-        dispatch(updateById(singleOffice));
+        dispatch(updateById(singleAbout));
         // ----------------------------------------------------------------------- //
       }
     };
     // ----------------------------------------------------------------------------------- //
-  
-    // -------------------------------------------------------------- //
     // get user data from id passed when register init
     useEffect(() => {
       if(processDone){
-        navigate('/police-offices')
+        navigate('/abouts')
       }
       // ----------------------------------------------------------------------- //
       // git user by id
@@ -110,19 +109,19 @@ import {
           }}
         >
           <Typography component="h1" variant="h5">
-            {id != undefined ? Strings.edit + Strings.police_office : Strings.add + Strings.police_office }
+            {id != undefined ? Strings.edit + Strings.fields : Strings.add + Strings.fields }
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="office_name"
+                  name="key"
                   required
                   fullWidth
-                  id="office_name"
-                  label={Strings.office_name}
-                  value={singleOffice["office_name"]}
+                  id="key"
+                  label={Strings.fieldName}
+                  value={singleAbout["key"]}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({
@@ -138,9 +137,9 @@ import {
                 <TextField
                   required
                   fullWidth
-                  id="office_city"
-                  label={Strings.city}
-                  value={singleOffice["office_city"]}
+                  id="value"
+                  label={Strings.fieldValue}
+                  value={singleAbout["value"]}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({
@@ -149,7 +148,7 @@ import {
                       })
                     )
                   }
-                  name="office_city"
+                  name="value"
                   autoComplete="family-name"
                 />
               </Grid>
@@ -172,5 +171,5 @@ import {
     // ====================================================================================================== //
   }
   
-  export default AddPoliceOffice;
+  export default AddAbout;
   

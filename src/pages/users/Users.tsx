@@ -54,7 +54,7 @@ function Users() {
       navigator('/login')
     }
   }, [dispatch]);
-  
+  console.log(userData);
   // ---------------------------------------------------------------------------------- //
   const handleDelete = (id: number) => {
     // TODO delete from users fix delete user

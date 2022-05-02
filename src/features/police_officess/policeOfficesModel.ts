@@ -18,6 +18,7 @@ export interface PoliceOfficesState {
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;
+  processDone : boolean;
   message: string[] | string;
 }
 

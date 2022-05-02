@@ -10,6 +10,7 @@ const initialState : UserState = {
   isError: false,
   isSucces: false,
   isLoading: false,
+  processDone: false,
   message: [],
 };
 
@@ -160,6 +161,7 @@ export const citizenSlice = createSlice({
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
+      state.processDone = false;
       state.message = [];
     },
     resetSingle: (state) => {
@@ -185,15 +187,20 @@ export const citizenSlice = createSlice({
       // register
       .addCase(add.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSucces = false;
+        state.processDone = false;
+        state.message = [];
       })
       .addCase(add.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSucces = true;
+        state.processDone = true;
         state.citizens = action.payload;
       })
       .addCase(add.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         state.citizens = null;
       })
@@ -205,11 +212,13 @@ export const citizenSlice = createSlice({
       .addCase(getAll.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = false;
         state.citizens = action.payload;
       })
       .addCase(getAll.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         state.citizens = null;
       })
@@ -217,16 +226,23 @@ export const citizenSlice = createSlice({
       // update citizen by id
       // TODO return fix  update message 
       .addCase(updateById.pending, (state) => {
+        
         state.isLoading = true;
+        state.isError = false;
+        state.isSucces = false;
+        state.processDone = false;
+        state.message = [];
       })
       .addCase(updateById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = true;
         state.citizens = action.payload;
       })
       .addCase(updateById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         state.citizens = null;
       })
@@ -239,6 +255,7 @@ export const citizenSlice = createSlice({
       .addCase(findById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = false;
         state.singleCitizen =  action.payload;
       })
       .addCase(findById.rejected, (state, action) => {
@@ -256,6 +273,7 @@ export const citizenSlice = createSlice({
       .addCase(searchIn.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = false;
         state.citizens = action.payload;
       })
       .addCase(searchIn.rejected, (state, action) => {
@@ -273,6 +291,7 @@ export const citizenSlice = createSlice({
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = false;
         state.citizens = action.payload;
       })
       .addCase(deleteById.rejected, (state, action) => {

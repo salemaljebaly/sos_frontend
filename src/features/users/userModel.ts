@@ -39,6 +39,7 @@ export interface UserState {
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;
+  processDone : boolean;
   message: string[] | string;
 }
 

@@ -8,9 +8,9 @@ const API_URL = 'http://localhost:4000/'
 const register = async (userData:UserModel) => {
     const response = await axios.post(API_URL + 'users', userData);
 
-    if(response.data){
-        localStorage.setItem('user', JSON.stringify(response.data));
-    }
+    // if(response.data){
+    //     localStorage.setItem('user', JSON.stringify(response.data));
+    // }
 
     return response.data;
 }

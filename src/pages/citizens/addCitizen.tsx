@@ -47,7 +47,7 @@ import {
     const navigate = useNavigate();
     // ----------------------------------------------------------------------------------- //
     // desctruct memebers from user state [ userSlice]
-    const { singleCitizen, isError, isSucces, isLoading, message } = useSelector(
+    const { singleCitizen, isError, isSucces, isLoading, message, processDone } = useSelector(
       (state: any) => state.citizen
     );
     // ----------------------------------------------------------------------------------- //
@@ -71,15 +71,16 @@ import {
     // -------------------------------------------------------------- //
     // get user data from id passed when register init
     useEffect(() => {
-        console.log('add citizen')
+      if(processDone){
+        navigate('/citizens')
+      }
       // ----------------------------------------------------------------------- //
       // git user by id
       if (id != undefined) {
-          console.log('citizen is ' + id);
         dispatch(findById(Number(id)));
       }
       // ----------------------------------------------------------------------- //
-    }, [dispatch]);
+    }, [dispatch, processDone]);
     // ====================================================================================================== //
   
     // -------------------------------------------------------------- //
@@ -171,7 +172,7 @@ import {
                       })
                     )
                   }
-                  autoFocus
+                  
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

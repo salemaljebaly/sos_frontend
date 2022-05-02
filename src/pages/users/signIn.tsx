@@ -1,30 +1,21 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import theme from "../theme/theme";
-import Strings from "../utils/Strings";
-import Copyright from "./copyrights";
+import {  ThemeProvider } from "@mui/material/styles";
+import theme from "../../theme/theme";
+import Strings from "../../utils/Strings";
+import Copyright from '../../components/copyrights';
 import { red } from "@mui/material/colors";
-import AppLogo from "./appLogo";
-import { login } from "../features/auth/authSlice";
+import AppLogo from "../../components/appLogo";
+import { login } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Severity } from "./SnackBar";
-import TransitionAlerts from "./TransitionAlert";
-import AlertDialog from "./common/ConfirmDialog";
-import Notification from "./common/Notification";
-import { Severtity } from "../utils/enum/Severity";
+import Notification from "../../components/common/Notification";
+import { Severtity } from "../../utils/enum/Severity";
 
 export default function SignIn() {
   // ------------------------------------------------------------------------------- //
@@ -68,7 +59,7 @@ export default function SignIn() {
         password: data.get("password")!.toString(),
       })
     );
-      navigate("/users");
+    if(isSucces) navigate("/users");
     
     if (isError) {
       setNotify({
@@ -81,6 +72,7 @@ export default function SignIn() {
     // check if user redux state
   };
 
+  //TODO fix login when navigate to users
   React.useEffect(() => {
     if (user) {
       navigate("/users");
@@ -135,10 +127,10 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label={Strings.rememberMe}
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -147,7 +139,7 @@ export default function SignIn() {
               >
                 {Strings.signInButtonText}
               </Button>
-              <Grid container>
+              {/* <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
                     {Strings.forgetPassword}
@@ -158,7 +150,7 @@ export default function SignIn() {
                     {Strings.dontHaveAccount}
                   </Link>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Box>
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />

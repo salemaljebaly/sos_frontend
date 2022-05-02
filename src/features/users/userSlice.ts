@@ -5,12 +5,13 @@ import { Role } from "../../utils/enum/role.enum";
 
 // Get user from local storage
 const user = JSON.parse(localStorage.getItem("user")!);
-const initialState : UserState = {
+const initialState: UserState = {
   users: [], // check if there is user
-  singleUser : {},
+  singleUser: {},
   isError: false,
   isSucces: false,
   isLoading: false,
+  processDone: false,
   message: [],
 };
 
@@ -38,7 +39,6 @@ export const login = createAsyncThunk(
   "user/login",
   async (user: LoginModel, thunkAPI) => {
     try {
-
       return await authService.login(user);
     } catch (error: any) {
       const message =
@@ -53,7 +53,7 @@ export const login = createAsyncThunk(
 );
 // ------------------------------------------------------------------------------------------- //
 // get all users
-export const getAllUser = createAsyncThunk (
+export const getAllUser = createAsyncThunk(
   "user/getAll",
   async (_, thunkAPI) => {
     try {
@@ -73,9 +73,9 @@ export const getAllUser = createAsyncThunk (
 
 // ------------------------------------------------------------------------------------------- //
 // delete user by id
-export const deleteUserById = createAsyncThunk (
+export const deleteUserById = createAsyncThunk(
   "user/deleteUserByID",
-  async (id : number, thunkAPI) => {
+  async (id: number, thunkAPI) => {
     try {
       return await authService.deleteUserById(user.access_token.toString(), id);
     } catch (error: any) {
@@ -92,12 +92,16 @@ export const deleteUserById = createAsyncThunk (
 
 // ------------------------------------------------------------------------------------------- //
 // update user by id
-export const updateUserById = createAsyncThunk (
+export const updateUserById = createAsyncThunk(
   "user/updateUserById",
-  async (userData : Partial<UserModel>, thunkAPI) => {
+  async (userData: Partial<UserModel>, thunkAPI) => {
     try {
-      const {id, ...fields} = userData;
-      return await authService.updateUserById(user.access_token.toString(), id!, fields);
+      const { id, ...fields } = userData;
+      return await authService.updateUserById(
+        user.access_token.toString(),
+        id!,
+        fields
+      );
     } catch (error: any) {
       const message =
         (error.response &&
@@ -111,9 +115,9 @@ export const updateUserById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // update user by id
-export const findUserById = createAsyncThunk (
+export const findUserById = createAsyncThunk(
   "user/findUserById",
-  async (id : number, thunkAPI) => {
+  async (id: number, thunkAPI) => {
     try {
       // TODO check find user works
       return await authService.findUserByID(user.access_token.toString(), id);
@@ -130,12 +134,15 @@ export const findUserById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // update user by id
-export const searchInUsers = createAsyncThunk (
+export const searchInUsers = createAsyncThunk(
   "user/searchInUsers",
-  async (keyword : string, thunkAPI) => {
+  async (keyword: string, thunkAPI) => {
     try {
       // TODO check find user works
-      return await authService.searchInUsers(user.access_token.toString(), keyword);
+      return await authService.searchInUsers(
+        user.access_token.toString(),
+        keyword
+      );
     } catch (error: any) {
       const message =
         (error.response &&
@@ -161,24 +168,25 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
+      state.processDone = false;
       state.message = [];
     },
     resetSingleUser: (state) => {
       state.singleUser = {
         isActive: false,
-        role : Role.User
+        role: Role.User,
       };
       state.message = [];
     },
     // ------------------------------------------------------------------ //
-    // use this function to changes in data 
-    handleChangeData : (state ,action) => {
-      console.log(action.payload)
+    // use this function to changes in data
+    handleChangeData: (state, action) => {
+      console.log(action.payload);
       state.singleUser = {
-        ...state.singleUser, 
-        [action.payload.name] : action.payload.value
-      }
-    }
+        ...state.singleUser,
+        [action.payload.name]: action.payload.value,
+      };
+    },
     // ------------------------------------------------------------------ //
   },
   extraReducers: (builder) => {
@@ -187,16 +195,23 @@ export const userSlice = createSlice({
       // register
       .addCase(register.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSucces = false;
+        state.processDone = false;
+        state.message = [];
       })
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.isError = false;
+        state.processDone = true;
         state.users = action.payload;
-        console.log(action.payload)
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         state.users = null;
       })
@@ -204,6 +219,7 @@ export const userSlice = createSlice({
       // get All user
       .addCase(getAllUser.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(getAllUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -218,32 +234,36 @@ export const userSlice = createSlice({
       })
       // ------------------------------------------------------------------ //
       // update user by id
-      // TODO return fix  update message 
+      // TODO return fix  update message
       .addCase(updateUserById.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(updateUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
+        state.processDone = true;
         state.users = action.payload;
       })
       .addCase(updateUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
       })
       // ------------------------------------------------------------------ //
       // find user by id
-      // TODO return fix  delete message 
+      // TODO return fix  delete message
       .addCase(findUserById.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(findUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.singleUser =  action.payload;
+        state.singleUser = action.payload;
       })
       .addCase(findUserById.rejected, (state, action) => {
         state.isLoading = false;
@@ -254,9 +274,10 @@ export const userSlice = createSlice({
       })
       // ------------------------------------------------------------------ //
       // find user by id
-      // TODO return fix  delete message 
+      // TODO return fix  delete message
       .addCase(searchInUsers.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(searchInUsers.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -272,9 +293,10 @@ export const userSlice = createSlice({
       })
       // ------------------------------------------------------------------ //
       // delete user by id
-      // TODO return fix  delete message 
+      // TODO return fix  delete message
       .addCase(deleteUserById.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(deleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -287,10 +309,10 @@ export const userSlice = createSlice({
         state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
         state.users = null;
-      })
-      // ------------------------------------------------------------------ //
+      });
+    // ------------------------------------------------------------------ //
   },
 });
 
-export const { reset ,resetSingleUser, handleChangeData} = userSlice.actions;
+export const { reset, resetSingleUser, handleChangeData } = userSlice.actions;
 export default userSlice.reducer;

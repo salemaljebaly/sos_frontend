@@ -60,5 +60,9 @@ export default class{
   static location: string = "الموقع";
   static office_name : string = " اسم المركز ";
   static police_office : string = " مركز شرطة ";
+  static fieldValue: string = 'قيمة لحقل';
+  static fieldName : string = 'اسم الحقل';
+  static fields: string = ' معلومات  ';
+  static about : string = ' حقول اضافية ' ;
 
 }

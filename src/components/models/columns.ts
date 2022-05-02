@@ -61,3 +61,12 @@ export const PoliceOfficesColumns: GridColDef[] = [
       `${params.row.longitude + params.row.latitude}`,
 },
 ];
+
+
+
+export const AboutColumns: GridColDef[] = [
+  { field: 'id', headerName: Strings.id, width: 70 },
+  { field: 'key', headerName: Strings.fieldName.toString(), width: 300 },
+  { field: 'value', headerName: Strings.fieldValue.toString(), width: 300 },
+];
+

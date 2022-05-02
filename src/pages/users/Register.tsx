@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Notification from "../../components/common/Notification";
 import {
+  reset,
   handleChangeData,
   register,
   findUserById,
@@ -47,7 +48,7 @@ function Register() {
   const navigate = useNavigate();
   // ----------------------------------------------------------------------------------- //
   // desctruct memebers from user state [ userSlice]
-  const { singleUser, isError, isSucces, isLoading, message } = useSelector(
+  const { singleUser, isError, isSucces, isLoading, message , processDone} = useSelector(
     (state: any) => state.users
   );
   // ----------------------------------------------------------------------------------- //
@@ -65,19 +66,22 @@ function Register() {
       dispatch(updateUserById(singleUser));
       // ----------------------------------------------------------------------- //
     }
+    dispatch(reset)
   };
   // ----------------------------------------------------------------------------------- //
 
   // -------------------------------------------------------------- //
-  // get user data from id passed when register init
   useEffect(() => {
+    if(processDone){
+      navigate('/users')
+    }
     // ----------------------------------------------------------------------- //
     // git user by id
     if (id != undefined) {
       dispatch(findUserById(Number(id)));
     }
     // ----------------------------------------------------------------------- //
-  }, [dispatch]);
+  }, [dispatch, processDone]);
   // ====================================================================================================== //
 
   // -------------------------------------------------------------- //
@@ -96,7 +100,7 @@ function Register() {
   return (
     <>
       
-      {isError ? <Alert severity="error" >{Array.isArray(message) ?  message[0] : message}</Alert> : null}
+      {isError && message != '' ? <Alert severity="error" >{Array.isArray(message) ?  message[0] : message}</Alert> : null}
       
 
       <CssBaseline />

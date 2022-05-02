@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { LoginModel, CitizenModel, CitizenModelFromToken, CitizensModel } from "./citizensModel";
+import { LoginModel, CitizenModel, CitizenModelFromToken } from "./citizensModel";
 
 const API_URL = 'http://localhost:4000/';
 const path = 'citizens';
@@ -13,10 +13,6 @@ const add = async (userData:CitizenModel, access_token: string) => {
     },
   }
     const response = await axios.post(API_URL + path , userData, config);
-
-    if(response.data){
-        localStorage.setItem('user', JSON.stringify(response.data));
-    }
 
     return response.data;
 }

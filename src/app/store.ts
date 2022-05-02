@@ -3,6 +3,7 @@ import authReducer from '../features/auth/authSlice';
 import userReducer from '../features/users/userSlice';
 import citizenReducer from '../features/citizens/citizensSlice';
 import policeOfficesReducer from '../features/police_officess/policeOfficesSlice';
+import aboutReducer from '../features/about/aboutSlice';
 // import snackbarReducer from '../features/components/snackbar';
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     auth: authReducer,
     citizen : citizenReducer,
     policeOffices : policeOfficesReducer,
+    about : aboutReducer,
     // snackbar : snackbarReducer
   },
 });

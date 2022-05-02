@@ -35,13 +35,15 @@ import Login from "../pages/users/Login";
 import Reports from "../pages/Reports";
 import About from "../pages/About";
 import PolicesOffices from "../pages/police_offices/PoliceOffices";
-import AddPoliceOffice from "../pages/police_offices/AddPoliceOffice";
 import Citizens from "../pages/citizens/Citizens";
 import Users from "../pages/users/Users";
 import { useDispatch, useSelector } from "react-redux";
-import SignIn from "./signIn";
+import SignIn from "../pages/users/signIn";
 import { logout } from "../features/auth/authSlice";
 import AddCitizen from "../pages/citizens/addCitizen";
+import Abouts from "../pages/about/Abouts";
+import AddPoliceOffice from "../pages/police_offices/AddPoliceOffice";
+import AddAbout from "../pages/about/AddAbout";
 
 const drawerWidth = 240;
 
@@ -285,7 +287,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
 
-          <Link to="/about" style={linkStyle}>
+          <Link to="/abouts" style={linkStyle}>
             <ListItem button>
               <ListItemIcon >
                 <InfoIcon  sx={{color: linkColor}}/>
@@ -322,6 +324,13 @@ export default function MiniDrawer() {
             <Route path='police-office' element={<AddPoliceOffice />} >
               <Route path=':id' element={<AddPoliceOffice />} />
             </Route>
+
+            
+            <Route path='abouts' element={<Abouts />} />
+            <Route path='about' element={<AddAbout />} >
+              <Route path=':id' element={<AddAbout />} />
+            </Route>
+
             <Route path="/register" element={<Register />} />
             <Route path='/reports' element={<Reports />} />
             <Route path='/login' element={<SignIn />} />

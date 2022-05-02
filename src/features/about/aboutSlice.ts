@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./policeOfficesService";
-import { PoliceOfficesState, PolicOfficeModel } from "./policeOfficesModel";
+import authService from "./aboutService";
+import { AboutModel, AboutState } from "./aboutModel";
 
-// Get PoliceOffices from local storage
-const user = JSON.parse(localStorage.getItem("user")!);
-const initialState : PoliceOfficesState = {
-  PoliceOffices: [], // check if there is PoliceOffices
-  singleOffice : {},
+const initialState : AboutState = {
+  Abouts: [], // check if there is PoliceOffices
+  singleAbout : {},
   isError: false,
   isSucces: false,
   isLoading: false,
+  // use this property to check add and edit process
   processDone : false,
   message: [],
 };
@@ -18,9 +17,9 @@ const initialState : PoliceOfficesState = {
 // Register PoliceOffices
 export const add = createAsyncThunk(
   "PoliceOffices/add",
-  async (PoliceOffices: PolicOfficeModel, thunkAPI) => {
+  async (about: AboutModel, thunkAPI) => {
     try {
-      return await authService.add(PoliceOffices, user.access_token.toString());
+      return await authService.add(about);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -39,7 +38,7 @@ export const getAll = createAsyncThunk (
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.getAll(user.access_token.toString());
+      return await authService.getAll();
     } catch (error: any) {
       const message =
         (error.response &&
@@ -58,7 +57,7 @@ export const deleteById = createAsyncThunk (
   "PoliceOffices/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(user.access_token.toString(), id);
+      return await authService.deleteById(id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -75,10 +74,10 @@ export const deleteById = createAsyncThunk (
 // update PoliceOffices by id
 export const updateById = createAsyncThunk (
   "PoliceOffices/updateById",
-  async (PoliceOfficesData : Partial<PolicOfficeModel>, thunkAPI) => {
+  async (about : Partial<AboutModel>, thunkAPI) => {
     try {
-      const {id, ...fields} = PoliceOfficesData;
-      return await authService.updateById(user.access_token.toString(), id!, fields);
+      const {id, ...fields} = about;
+      return await authService.updateById(id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -97,7 +96,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find PoliceOffices works
-      return await authService.findByID(user.access_token.toString(), id);
+      return await authService.findByID(id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -111,15 +110,15 @@ export const findById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 
-export const PoliceOfficesSlice = createSlice({
-  name: "policeOffices",
+export const AboutSlice = createSlice({
+  name: "about",
   initialState,
   reducers: {
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.PoliceOffices = null;
-      state.singleOffice = null;
+      state.Abouts = null;
+      state.singleAbout = null;
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
@@ -127,15 +126,19 @@ export const PoliceOfficesSlice = createSlice({
       state.message = [];
     },
     resetSingle: (state) => {
-      state.singleOffice = {};
+      state.singleAbout = {};
       state.message = [];
+      state.isLoading = false;
+      state.isSucces = false;
+      state.isError = false;
+      state.processDone = false;
     },
     // ------------------------------------------------------------------ //
     // use this function to changes in data 
     handleChangeData : (state ,action) => {
       console.log(action.payload);
-      state.singleOffice = {
-        ...state.singleOffice, 
+      state.singleAbout = {
+        ...state.singleAbout, 
         [action.payload.name] : action.payload.value
       }
     }
@@ -147,102 +150,108 @@ export const PoliceOfficesSlice = createSlice({
       // register
       .addCase(add.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSucces = false;
         state.processDone = false;
+        state.message = [];
       })
       .addCase(add.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSucces = true;
         state.processDone = true;
-        state.PoliceOffices = action.payload;
+        state.Abouts = action.payload;
       })
       .addCase(add.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.isSucces = false;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.Abouts = null;
       })
       // ------------------------------------------------------------------ //
-      // get All PoliceOffices
+      // get All Abouts
       .addCase(getAll.pending, (state) => {
         state.isLoading = true;
-        state.processDone = false;
       })
       .addCase(getAll.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.PoliceOffices = action.payload;
+        state.processDone = false;
+        state.Abouts = action.payload;
       })
       .addCase(getAll.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
-        
+        state.Abouts = null;
+        state.processDone = false;
         console.log(action.payload);
       })
       // ------------------------------------------------------------------ //
-      // update PoliceOffices by id
+      // update Abouts by id
       // TODO return fix  update message 
       .addCase(updateById.pending, (state) => {
+        
         state.isLoading = true;
+        state.isError = false;
+        state.isSucces = false;
         state.processDone = false;
+        state.message = [];
       })
       .addCase(updateById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isSucces = true;
-        state.isError = false;
         state.processDone = true;
-        state.PoliceOffices = action.payload;
+        state.Abouts = action.payload;
       })
       .addCase(updateById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.Abouts = null;
       })
       // ------------------------------------------------------------------ //
-      // find PoliceOffices by id
+      // find Abouts by id
       // TODO return fix  delete message 
       .addCase(findById.pending, (state) => {
         state.isLoading = true;
-        state.processDone = false;
       })
       .addCase(findById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.singleOffice =  action.payload;
+        state.singleAbout =  action.payload;
         console.log(action.payload)
+        state.processDone = false;
       })
       .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.singleOffice = null;
+        state.singleAbout = null;
         
         console.log(action.payload)
       })
       // ------------------------------------------------------------------ //
-      // delete PoliceOffices by id
+      // delete Abouts by id
       // TODO return fix  delete message 
       .addCase(deleteById.pending, (state) => {
         state.isLoading = true;
-        state.processDone = false;
       })
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.PoliceOffices = action.payload;
+        state.processDone = false;
+        state.Abouts = action.payload;
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.Abouts = null;
       })
       // ------------------------------------------------------------------ //
   },
 });
 
-export const { reset ,resetSingle, handleChangeData} = PoliceOfficesSlice.actions;
-export default PoliceOfficesSlice.reducer;
+export const { reset ,resetSingle, handleChangeData} = AboutSlice.actions;
+export default AboutSlice.reducer;

@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import DataTable from "../../components/table";
 import { CitizensModel } from "../../features/citizens/citizensModel";
 import { UsersModel } from "../../features/users/userModel";
-import {  deleteById, getAll, reset, resetSingle } from "../../features/police_officess/policeOfficesSlice";
+import {  deleteById, getAll, reset, resetSingle } from "../../features/about/aboutSlice";
 import Strings from "../../utils/Strings";
-import { citizensColumns, PoliceOfficesColumns } from "../../components/models/columns";
+import { AboutColumns, citizensColumns, PoliceOfficesColumns } from "../../components/models/columns";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import { green, red } from "@mui/material/colors";
@@ -17,13 +17,9 @@ import {
 } from "@mui/icons-material";
 
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-import { PoliceOfficesModel } from "../../features/police_officess/policeOfficesModel";
+import { AboutModel } from "../../features/about/aboutModel";
 
-interface Props {
-  userData: UsersModel[];
-}
-
-function PoliceOffices() {
+function Abouts() {
   
   const navigate = useNavigate();
   // ---------------------------------------------------------------------------------- //
@@ -36,15 +32,15 @@ function PoliceOffices() {
   // ---------------------------------------------------------------------------------- //
 
   const dispatch = useDispatch();
-  const { PoliceOffices, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.policeOffices
+  const { Abouts, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.about
   );
 
   const { user } = useSelector(
     (state: any) => state.auth
   );
 
-  let data: PoliceOfficesModel[] = PoliceOffices as PoliceOfficesModel[];
+  let data: AboutModel[] = Abouts as AboutModel[];
 
   useEffect(() => {
     if(user){
@@ -63,7 +59,7 @@ function PoliceOffices() {
     });
     dispatch(deleteById(id));
     dispatch(getAll());
-    navigate("/police-offices");
+    navigate("/abouts");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]
@@ -76,8 +72,9 @@ function PoliceOffices() {
         return (
           <Box className="cellAction">
             <Link
-              to={`/police-office/${params.row.id}`}
+              to={`/about/${params.row.id}`}
               style={{ textDecoration: "none" }}
+              onClick={() => dispatch(resetSingle())}
             >
               <RemoveRedEye
                 sx={{ color: green[500], marginRight: 2, marginLeft: 2 }}
@@ -117,13 +114,13 @@ function PoliceOffices() {
         }}
         onClick={() => {
           dispatch(resetSingle());
-          navigate("/police-office");
+          navigate("/about");
         }}
       >
-        {Strings.add + Strings.police_office }
+        {Strings.add + Strings.about }
       </Button>
       {data?.length > 0 ? (
-        <DataTable row={PoliceOfficesColumns} data={data} action={actionColumn}/>
+        <DataTable row={AboutColumns} data={data} action={actionColumn}/>
       ) : (
         <div>No data returned</div>
       )}
@@ -136,4 +133,4 @@ function PoliceOffices() {
   );
 }
 
-export default PoliceOffices;
+export default Abouts;

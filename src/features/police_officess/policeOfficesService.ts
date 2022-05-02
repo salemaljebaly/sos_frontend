@@ -15,10 +15,6 @@ const add = async (data: PolicOfficeModel, access_token: string) => {
 
   const response = await axios.post(API_URL + path, data, config);
 
-  if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
-  }
-
   return response.data;
 };
 // get all
