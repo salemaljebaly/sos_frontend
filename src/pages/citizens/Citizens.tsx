@@ -5,32 +5,34 @@ import { useDispatch, useSelector } from "react-redux";
 import DataTable from "../../components/table";
 import { CitizensModel } from "../../features/citizens/citizensModel";
 import { UsersModel } from "../../features/users/userModel";
-import {  deleteById, getAll, reset, resetSingle } from "../../features/citizens/citizensSlice";
+import {
+  deleteById,
+  getAll,
+  reset,
+  resetSingle,
+} from "../../features/citizens/citizensSlice";
 import Strings from "../../utils/Strings";
 import { citizensColumns } from "../../components/models/columns";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
 import { green, red } from "@mui/material/colors";
-import {
-  DeleteRounded,
-  RemoveRedEye,
-} from "@mui/icons-material";
+import { DeleteRounded, RemoveRedEye } from "@mui/icons-material";
 
 import ConfirmDialog from "../../components/common/ConfirmDialog";
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 
 interface Props {
   userData: UsersModel[];
 }
 
 function Citizens() {
-  
   const navigate = useNavigate();
   // ---------------------------------------------------------------------------------- //
   const [confirmDialog, setConfirmDialog] = React.useState({
     isOpen: false,
     title: "",
     subTitle: "",
-    onConfirm : () => {}
+    onConfirm: () => {},
   });
   // ---------------------------------------------------------------------------------- //
 
@@ -39,17 +41,15 @@ function Citizens() {
     (state: any) => state.citizen
   );
 
-  const { user } = useSelector(
-    (state: any) => state.auth
-  );
+  const { user } = useSelector((state: any) => state.auth);
 
   let citizenData: CitizensModel[] = citizens as CitizensModel[];
 
   useEffect(() => {
-    if(user){
+    if (user) {
       dispatch(getAll());
     } else {
-      navigate('/login')
+      navigate("/login");
     }
   }, [dispatch]);
 
@@ -70,10 +70,18 @@ function Citizens() {
     {
       field: "action",
       headerName: "التحكم",
-      width: 100,
+      width: 200,
       renderCell: (params: any) => {
         return (
           <Box className="cellAction">
+            <Box
+              component={"a"}
+              sx={{ textDecoration: "none" }}
+              target={"_blank"}
+              href={`https://maps.google.com/?q=${params.row.latitude}, ${params.row.longitude}`}
+            >
+              <FmdGoodIcon sx={{ color: green[500] }} />
+            </Box>
             <Link
               to={`/citizen/${params.row.id}`}
               style={{ textDecoration: "none" }}
@@ -119,15 +127,19 @@ function Citizens() {
           navigate("/citizen");
         }}
       >
-        {Strings.add + Strings.citizen }
+        {Strings.add + Strings.citizen}
       </Button>
       {citizenData?.length > 0 ? (
-        <DataTable row={citizensColumns} data={citizenData} action={actionColumn}/>
+        <DataTable
+          row={citizensColumns}
+          data={citizenData}
+          action={actionColumn}
+        />
       ) : (
         <div>No data returned</div>
       )}
 
-<ConfirmDialog
+      <ConfirmDialog
         confirmDialog={confirmDialog}
         setConfirmDialog={setConfirmDialog}
       />

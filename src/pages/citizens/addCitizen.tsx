@@ -19,6 +19,7 @@ import {
   import { useSelector, useDispatch } from "react-redux";
   import { useNavigate, useParams } from "react-router-dom";
   import Notification from "../../components/common/Notification";
+import Map from "../../components/Map";
   import {
     handleChangeData,
     add,
@@ -272,10 +273,36 @@ import {
                       }
                     />
                   }
-                  label={Strings.activeUser}
+                  label={Strings.activeCitizen}
                 />
               </Grid>
             </Grid>
+            {/* ------------------------------------------------------------------------------------------------------------------------------ */}
+            {/* Map component */}
+            <Map
+              currentLat={Number.isNaN(Number.parseFloat(singleCitizen["latitude"])) ?  Strings.initMap.lat : Number.parseFloat(singleCitizen["latitude"])}
+              currentLng={Number.isNaN(Number.parseFloat(singleCitizen["longitude"])) ? Strings.initMap.lng : Number.parseFloat(singleCitizen["longitude"])}
+              currentZoom={6}
+              currentKey={(Math.random() * 100).toString()}
+              onDragPin={(e : any) => {
+                // set latitude
+                dispatch(
+                  handleChangeData({
+                    name: "latitude",
+                    value: e.lat().toString(),
+                  })
+                )
+                // set longitude
+                dispatch(
+                  handleChangeData({
+                    name: "longitude",
+                    value: e.lng().toString(),
+                  })
+                )
+              }}
+            />
+            {/* ------------------------------------------------------------------------------------------------------------------------------ */}
+
             <Button
               type="submit"
               fullWidth

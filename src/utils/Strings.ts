@@ -19,6 +19,7 @@ export default class{
     static lastName: string = "الأسم الأخير";
     static email: string = "الايميل";
     static activeUser: string = "تفعيل المستخدم";
+    static activeCitizen: string = "تفعيل المستخدم";
     static normalUser : string = "مستخدم عادي";
     static admin : string = "مدير";
     static permission :string = "الصلاحية";
@@ -64,5 +65,9 @@ export default class{
   static fieldName : string = 'اسم الحقل';
   static fields: string = ' معلومات  ';
   static about : string = ' حقول اضافية ' ;
+  static initMap = {
+    lat: 32.36447150118714,
+    lng : 15.16091104212196
+  };
 
 }

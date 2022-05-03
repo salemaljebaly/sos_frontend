@@ -44,11 +44,7 @@ export const userColumns: GridColDef[] = [
     { field: 'isActive', headerName: Strings.isActive.toString(), width: 130 , 
     valueGetter: (params: GridValueGetterParams) =>
         `${params.row.isActive ? 'مفعل' : 'غير مفعل'}`,
-  },
-    { field: 'location', headerName: Strings.location.toString(), width: 130 ,
-    valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.longitude + params.row.latitude}`,
-  },
+  }
   ];
 
   

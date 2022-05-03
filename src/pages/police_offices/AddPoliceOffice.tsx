@@ -89,15 +89,9 @@ function AddPoliceOffice() {
       dispatch(findById(Number(id)));
       console.log(singleOffice["office_name"]);
       console.log(singleOffice["latitude"] + "," + singleOffice["longitude"]);
-      setMapPosition({
-        lat: Number.parseFloat(singleOffice["latitude"]),
-        lng: Number.parseFloat(singleOffice["longitude"]),
-      });
+
     } else {
-      setMapPosition({
-        lat: 32.36447150118714,
-        lng: 15.16091104212196,
-      });
+
     }
     // ----------------------------------------------------------------------- //
   }, [dispatch, processDone]);
@@ -178,10 +172,13 @@ function AddPoliceOffice() {
                 autoComplete="family-name"
               />
             </Grid>
-
+            
+          </Grid>
+            {/* ------------------------------------------------------------------------------------------------------------------------------ */}
+            {/* Map component */}
             <Map
-              currentLat={Number.isNaN(Number.parseFloat(singleOffice["latitude"])) ? mapPosition.lat : Number.parseFloat(singleOffice["latitude"])}
-              currentLng={Number.isNaN(Number.parseFloat(singleOffice["longitude"])) ? mapPosition.lng : Number.parseFloat(singleOffice["longitude"])}
+              currentLat={Number.isNaN(Number.parseFloat(singleOffice["latitude"])) ?  Strings.initMap.lat : Number.parseFloat(singleOffice["latitude"])}
+              currentLng={Number.isNaN(Number.parseFloat(singleOffice["longitude"])) ? Strings.initMap.lng : Number.parseFloat(singleOffice["longitude"])}
               currentZoom={6}
               currentKey={(Math.random() * 100).toString()}
               onDragPin={(e : any) => {
@@ -201,7 +198,8 @@ function AddPoliceOffice() {
                 )
               }}
             />
-          </Grid>
+            {/* ------------------------------------------------------------------------------------------------------------------------------ */}
+
           <Button
             type="submit"
             fullWidth

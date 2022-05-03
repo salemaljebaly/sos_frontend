@@ -4,7 +4,8 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-map
 const containerStyle = {
   width: '100%',
   height: '400px',
-  margin : '8px'
+  marginTop : '8px',
+  borderRadius: '6px'
   
 };
 // --------------------------------------------------------------------------------------------- /
