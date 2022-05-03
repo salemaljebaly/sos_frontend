@@ -28,6 +28,7 @@ import {
 import Strings from "../../utils/Strings";
 import { MapRounded } from "@mui/icons-material";
 import MyComponent from "../../components/Map";
+import Map from "../../components/Map";
 
 const defaultMapProps = {
   center: {
@@ -138,7 +139,7 @@ function AddPoliceOffice() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} sx={{padding: 1}}>
               <TextField
                 autoComplete="given-name"
                 name="office_name"
@@ -178,10 +179,12 @@ function AddPoliceOffice() {
               />
             </Grid>
 
-            <MyComponent
+            <Map
               currentLat={Number.isNaN(Number.parseFloat(singleOffice["latitude"])) ? mapPosition.lat : Number.parseFloat(singleOffice["latitude"])}
               currentLng={Number.isNaN(Number.parseFloat(singleOffice["longitude"])) ? mapPosition.lng : Number.parseFloat(singleOffice["longitude"])}
-              mapClick={(e : any) => {
+              currentZoom={6}
+              currentKey={(Math.random() * 100).toString()}
+              onDragPin={(e : any) => {
                 // set latitude
                 dispatch(
                   handleChangeData({
