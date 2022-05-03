@@ -18,6 +18,7 @@ import {
 
 import ConfirmDialog from "../../components/common/ConfirmDialog";
 import { PoliceOfficesModel } from "../../features/police_officess/policeOfficesModel";
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 
 interface Props {
   userData: UsersModel[];
@@ -71,10 +72,13 @@ function PoliceOffices() {
     {
       field: "action",
       headerName: "التحكم",
-      width: 100,
+      width: 200,
       renderCell: (params: any) => {
         return (
-          <Box className="cellAction">
+          <Box className="cellAction" sx={{margin: 'auto'}}>
+          <Box component={'a'} sx={{textDecoration: 'none'}} target={"_blank"} href={`https://maps.google.com/?q=${params.row.latitude}, ${params.row.longitude}`} >
+            <FmdGoodIcon  sx={{ color: green[500]}} />
+          </Box>
             <Link
               to={`/police-office/${params.row.id}`}
               style={{ textDecoration: "none" }}
