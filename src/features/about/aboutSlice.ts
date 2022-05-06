@@ -118,7 +118,7 @@ export const AboutSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.Abouts = null;
+      state.Abouts = [];
       state.singleAbout = null;
       state.isLoading = false;
       state.isSucces = false;
@@ -167,13 +167,13 @@ export const AboutSlice = createSlice({
         state.isSucces = false;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Abouts = [];
       })
       // ------------------------------------------------------------------ //
       // get All Abouts
       .addCase(getAll.pending, (state) => {
         state.isLoading = true;
-        state.Abouts = null;
+        state.Abouts = [];
       })
       .addCase(getAll.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -185,7 +185,7 @@ export const AboutSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Abouts = [];
         state.processDone = false;
         console.log(action.payload);
       })
@@ -210,7 +210,7 @@ export const AboutSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Abouts = [];
       })
       // ------------------------------------------------------------------ //
       // find Abouts by id
@@ -238,20 +238,19 @@ export const AboutSlice = createSlice({
       // TODO return fix  delete message 
       .addCase(deleteById.pending, (state) => {
         state.isLoading = true;
-        state.Abouts = null;
 
       })
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
         state.processDone = false;
-        state.Abouts = action.payload;
+        state.Abouts = state.Abouts.filter((about : AboutModel)=> about.id !== action.payload)
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Abouts = [];
       })
       // ------------------------------------------------------------------ //
   },

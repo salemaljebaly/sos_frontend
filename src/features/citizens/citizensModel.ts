@@ -37,13 +37,14 @@ export interface CitizenModelFromToken {
 // --------------------------------------------------- //
 // return user from redux state
 export interface UserState {
-  citizens: CitizensModel[] | Partial<CitizenModel> | null;
+  citizens: CitizensModel[] | [];
   singleCitizen : Partial<CitizenModel> | null;
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;
   processDone : boolean;
   message: string[] | string;
+  count : number;
 }
 
 // --------------------------------------------------- //

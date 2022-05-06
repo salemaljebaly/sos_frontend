@@ -61,8 +61,6 @@ function Abouts() {
       isOpen: false,
     });
     dispatch(deleteById(id));
-    dispatch(getAll());
-    navigate("/abouts");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]

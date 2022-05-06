@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./citizensService";
-import { LoginModel, CitizenModel, UserState } from "./citizensModel";
+import { LoginModel, CitizenModel, UserState, CitizensModel } from "./citizensModel";
 
 // Get citizen from local storage
 const user = JSON.parse(localStorage.getItem("user")!);
@@ -12,6 +12,7 @@ const initialState : UserState = {
   isLoading: false,
   processDone: false,
   message: [],
+  count: 0
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -59,6 +60,25 @@ export const getAll = createAsyncThunk (
     try {
       // TODO get token from redux state not local storage
       return await authService.getAll(user.access_token.toString());
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// ------------------------------------------------------------------------------------------- //
+// get all citizens
+export const countAll = createAsyncThunk (
+  "citizen/countAll",
+  async (_, thunkAPI) => {
+    try {
+      // TODO get token from redux state not local storage
+      return await authService.countAll(user.access_token.toString()) as number;
     } catch (error: any) {
       const message =
         (error.response &&
@@ -156,7 +176,7 @@ export const citizenSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.citizens = null;
+      state.citizens = [];
       state.singleCitizen = null;
       state.isLoading = false;
       state.isSucces = false;
@@ -202,7 +222,7 @@ export const citizenSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.citizens = null;
+        state.citizens = [];
       })
       // ------------------------------------------------------------------ //
       // get All citizen
@@ -220,7 +240,22 @@ export const citizenSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.citizens = null;
+        state.citizens = [];
+      })
+      // ------------------------------------------------------------------ //
+      // get count citizen
+      .addCase(countAll.pending, (state) => {
+        state.count = 0;
+      })
+      .addCase(countAll.fulfilled, (state, action) => {
+        state.count = action.payload;
+      })
+      .addCase(countAll.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.processDone = false;
+        state.message = action.payload as string[]; // get value when reject
+        state.count = 0;
       })
       // ------------------------------------------------------------------ //
       // update citizen by id
@@ -244,7 +279,7 @@ export const citizenSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.citizens = null;
+        state.citizens = [];
       })
       // ------------------------------------------------------------------ //
       // find citizen by id
@@ -280,7 +315,7 @@ export const citizenSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.citizens = null;
+        state.citizens = [];
       })
       // ------------------------------------------------------------------ //
       // delete citizen by id
@@ -292,13 +327,13 @@ export const citizenSlice = createSlice({
         state.isLoading = false;
         state.isSucces = true;
         state.processDone = false;
-        state.citizens = action.payload;
+        state.citizens = state.citizens.filter((citizen : CitizensModel)=> citizen.id !== action.payload)
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.citizens = null;
+        state.citizens = [];
       })
       // ------------------------------------------------------------------ //
   },

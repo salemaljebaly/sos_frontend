@@ -62,8 +62,6 @@ function PoliceOffices() {
       isOpen: false,
     });
     dispatch(deleteById(id));
-    dispatch(getAll());
-    navigate("/police-offices");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]

@@ -61,8 +61,6 @@ function Citizens() {
       isOpen: false,
     });
     dispatch(deleteById(id));
-    dispatch(getAll());
-    navigate("/users");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]

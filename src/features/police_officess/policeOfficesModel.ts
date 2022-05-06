@@ -13,7 +13,7 @@ export interface PolicOfficeModel {
 // --------------------------------------------------- //
 // return user from redux state
 export interface PoliceOfficesState {
-  PoliceOffices: PoliceOfficesModel[] | Partial<PolicOfficeModel> | null;
+  PoliceOffices: PoliceOfficesModel[] | [];
   singleOffice : Partial<PoliceOfficesModel> | null;
   isError: boolean;
   isSucces: boolean;

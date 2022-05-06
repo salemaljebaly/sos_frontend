@@ -65,8 +65,6 @@ function Reports() {
       isOpen: false,
     });
     dispatch(deleteById(id));
-    dispatch(getAll());
-    navigate("/reports");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]

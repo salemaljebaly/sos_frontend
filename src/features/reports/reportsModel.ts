@@ -32,12 +32,13 @@ export interface ReporterModel {
 // --------------------------------------------------- //
 // reportState model
 export interface ReportState{
-  Reports: ReportsModel[] | ReportsModel | Partial<ReportsModel> | [] | null, // check if there is PoliceOffices
-  singleReport : Partial<ReporterModel> | null,
-  isError: boolean,
-  isSucces: boolean,
-  isLoading: boolean,
-  processDone : boolean,
-  message: string[] | string,
+  Reports: ReportsModel[]  | [] ; // check if there is PoliceOffices
+  singleReport : Partial<ReporterModel> | null;
+  isError: boolean;
+  isSucces: boolean;
+  isLoading: boolean;
+  processDone : boolean;
+  message: string[] | string;
+  count : number;
 }
 // --------------------------------------------------- //

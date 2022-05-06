@@ -12,6 +12,7 @@ const initialState : ReportState  = {
   isLoading: false,
   processDone : false,
   message: [],
+  count : 0
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -40,6 +41,25 @@ export const getAll = createAsyncThunk (
     try {
       // TODO get token from redux state not local storage
       return await authService.getAll(user.access_token.toString());
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// ------------------------------------------------------------------------------------------- //
+// get all Reportss
+export const countAll = createAsyncThunk (
+  "Reports/countAll",
+  async (_, thunkAPI) => {
+    try {
+      // TODO get token from redux state not local storage
+      return await authService.countAll(user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -118,7 +138,7 @@ export const ReportsSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.Reports = null;
+      state.Reports = [];
       state.singleReport = null;
       state.isLoading = false;
       state.isSucces = false;
@@ -160,7 +180,7 @@ export const ReportsSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.Reports = null;
+        state.Reports = [];
       })
       // ------------------------------------------------------------------ //
       // get All Reports
@@ -177,9 +197,25 @@ export const ReportsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Reports = null;
+        state.Reports = [];
         
         console.log(action.payload);
+      })
+      // ------------------------------------------------------------------ //
+      // get count Reports
+      .addCase(countAll.pending, (state) => {
+        state.count = 0;
+      })
+      .addCase(countAll.fulfilled, (state, action) => {
+        state.count = action.payload;
+        state.isLoading = false;
+        state.isSucces = true;
+      })
+      .addCase(countAll.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string[]; // get value when reject
+        state.count = 0;
       })
       // ------------------------------------------------------------------ //
       // update Reports by id
@@ -199,7 +235,7 @@ export const ReportsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Reports = null;
+        state.Reports = [];
       })
       // ------------------------------------------------------------------ //
       // find Reports by id
@@ -212,7 +248,6 @@ export const ReportsSlice = createSlice({
         state.isLoading = false;
         state.isSucces = true;
         state.singleReport =  action.payload;
-        console.log(action.payload)
       })
       .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
@@ -232,13 +267,13 @@ export const ReportsSlice = createSlice({
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.Reports = action.payload;
+        state.Reports = state.Reports.filter((report : ReportsModel)=> report.id != action.payload)
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Reports = null;
+        state.Reports = [];
       })
       // ------------------------------------------------------------------ //
   },

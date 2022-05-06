@@ -13,6 +13,7 @@ const initialState: UserState = {
   isLoading: false,
   processDone: false,
   message: [],
+  count : 0,
 };
 
 // ------------------------------------------------------------------------------------------- //
@@ -59,6 +60,26 @@ export const getAllUser = createAsyncThunk(
     try {
       // TODO get token from redux state not local storage
       return await authService.getAllUsers(user.access_token.toString());
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// ------------------------------------------------------------------------------------------- //
+// get count users
+export const countAll = createAsyncThunk(
+  "user/countAll",
+  async (_, thunkAPI) => {
+    try {
+      // TODO get token from redux state not local storage
+      return await authService.countAll(user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -163,7 +184,7 @@ export const userSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.users = null;
+      state.users = [];
       state.singleUser = null;
       state.isLoading = false;
       state.isSucces = false;
@@ -213,7 +234,7 @@ export const userSlice = createSlice({
 
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.users = null;
+        state.users = [];
       })
       // ------------------------------------------------------------------ //
       // get All user
@@ -230,7 +251,22 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.users = null;
+        state.users = [];
+      })
+      // ------------------------------------------------------------------ //
+      // get count user
+      .addCase(countAll.pending, (state) => {
+        state.count = 0;
+      })
+      .addCase(countAll.fulfilled, (state, action) => {
+        state.count = action.payload;
+        state.isSucces = true;
+      })
+      .addCase(countAll.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string[]; // get value when reject
+        state.count = 0;
       })
       // ------------------------------------------------------------------ //
       // update user by id
@@ -251,7 +287,7 @@ export const userSlice = createSlice({
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
         console.log("from reject " + action.payload);
-        state.users = null;
+        state.users = [];
       })
       // ------------------------------------------------------------------ //
       // find user by id
@@ -288,8 +324,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
-        state.users = null;
+        state.users = [];
       })
       // ------------------------------------------------------------------ //
       // delete user by id
@@ -301,14 +336,13 @@ export const userSlice = createSlice({
       .addCase(deleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.users = action.payload;
+        state.users = state.users.filter((user : UsersModel)=> user.id != action.payload)
       })
       .addCase(deleteUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        console.log("from reject " + action.payload);
-        state.users = null;
+        state.users = [];
       });
     // ------------------------------------------------------------------ //
   },

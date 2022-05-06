@@ -3,7 +3,7 @@ import jwtDecode from "jwt-decode";
 import { LoginModel, UserModel, UserModelFromToken, UsersModel } from "./userModel";
 
 const API_URL = 'http://localhost:4000/'
-
+const path : string = 'users';
 // Register user
 const register = async (userData:UserModel) => {
     const response = await axios.post(API_URL + 'users', userData);
@@ -31,19 +31,30 @@ const login = async (userData:LoginModel) => {
 
 // get all user
 const getAllUsers = async (access_token: string) => {
-    const config = {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    const response = await axios.get(API_URL + 'users', config);
-    let users : UsersModel[];
-    if(response.data){
-        users  = response.data
-        return users;
-        
+  const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
     }
-    return response.data;
+  const response = await axios.get(API_URL + path, config);
+  let users : UsersModel[];
+  if(response.data){
+      users  = response.data
+      return users;
+      
+  }
+  return response.data;
+}
+
+// get count user
+const countAll = async (access_token: string) => {
+  const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  const response = await axios.get(API_URL + path + '/count', config);
+  return response.data;
 }
 
 
@@ -55,7 +66,7 @@ const updateUserById  = async (access_token: string, id : number, userData:Parti
           Authorization: `Bearer ${access_token}`,
         },
       }
-    const response = await axios.patch(API_URL + 'users/' + id,userData, config);
+    const response = await axios.patch(API_URL + path+'/' + id,userData, config);
     const retrunUserData  = findUserByID(access_token, id);
     return retrunUserData;
 }
@@ -68,7 +79,7 @@ const findUserByID  = async (access_token: string, id : number) => {
           Authorization: `Bearer ${access_token}`,
         },
       }
-    const response = await axios.get(API_URL + 'users/' + id, config);
+    const response = await axios.get(API_URL + path + '/' + id, config);
     
     return response.data;
 }
@@ -81,7 +92,7 @@ const deleteUserById  = async (access_token: string, id : number) => {
           Authorization: `Bearer ${access_token}`,
         },
       }
-    const response = await axios.delete(API_URL + 'users/' + id, config);
+    const response = await axios.delete(API_URL + path + '/' + id, config);
     
     return response.data;
 }
@@ -94,7 +105,7 @@ const searchInUsers  = async (access_token: string, keyword : string) => {
         Authorization: `Bearer ${access_token}`,
       },
     }
-  const response = await axios.get(API_URL + 'users/' + keyword, config);
+  const response = await axios.get(API_URL + path + '/' + keyword, config);
   
   // it retrun array of users 
   return response.data;
@@ -106,9 +117,6 @@ const logout = () => {
   localStorage.removeItem('user')
 }
 
-
-
-
 const authService = {
     register,
     login,
@@ -117,7 +125,8 @@ const authService = {
     updateUserById, 
     findUserByID,
     searchInUsers,
-    logout
+    logout,
+    countAll
 }
 
 export default authService;

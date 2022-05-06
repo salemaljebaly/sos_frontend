@@ -118,7 +118,7 @@ export const PoliceOfficesSlice = createSlice({
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.PoliceOffices = null;
+      state.PoliceOffices = [];
       state.singleOffice = null;
       state.isLoading = false;
       state.isSucces = false;
@@ -160,7 +160,7 @@ export const PoliceOfficesSlice = createSlice({
         state.isError = true;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.PoliceOffices = [];
       })
       // ------------------------------------------------------------------ //
       // get All PoliceOffices
@@ -177,7 +177,7 @@ export const PoliceOfficesSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.PoliceOffices = [];
         
         console.log(action.payload);
       })
@@ -199,7 +199,7 @@ export const PoliceOfficesSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.PoliceOffices = [];
       })
       // ------------------------------------------------------------------ //
       // find PoliceOffices by id
@@ -212,7 +212,7 @@ export const PoliceOfficesSlice = createSlice({
         state.isLoading = false;
         state.isSucces = true;
         state.singleOffice =  action.payload;
-        console.log(action.payload)
+        
       })
       .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
@@ -232,13 +232,14 @@ export const PoliceOfficesSlice = createSlice({
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.PoliceOffices = action.payload;
+        state.PoliceOffices = state.PoliceOffices.filter((office : PolicOfficeModel)=> office.id !== action.payload)
+
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.PoliceOffices = null;
+        state.PoliceOffices = [];
       })
       // ------------------------------------------------------------------ //
   },

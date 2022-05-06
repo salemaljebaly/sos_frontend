@@ -62,8 +62,6 @@ function Users() {
       isOpen: false,
     });
     dispatch(deleteUserById(id));
-    dispatch(getAllUser());
-    navigate("/users");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]

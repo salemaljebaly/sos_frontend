@@ -32,6 +32,16 @@ const getAll = async (access_token: string) => {
   }
   return response.data;
 };
+// count all
+const countAll = async (access_token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+  const response = await axios.get(API_URL + path + '/count', config);
+  return response.data;
+};
 
 // update user from database
 const updateById = async (
@@ -79,6 +89,7 @@ const authService = {
   deleteById,
   updateById,
   findByID,
+  countAll
 };
 
 export default authService;

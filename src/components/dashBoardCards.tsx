@@ -7,8 +7,32 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import { red } from '@mui/material/colors';
 import { Grid } from '@mui/material';
+import { countAll as countCitizens } from '../features/citizens/citizensSlice';
+import { countAll as countUsers } from '../features/users/userSlice';
+import { countAll as countReports } from '../features/reports/reportSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const DashBoardCards = () => {
+  const dispatch = useDispatch();
+  let countCitizen : number = 0;
+  let countUser : number = 0;
+  let countReport : number = 0;
+   useSelector(
+    (state: any) => {
+      console.log(state);
+      countCitizen = state.citizen.count;
+      countUser = state.users.count;
+      countReport = state.report.count;
+    }
+  );
+
+  useEffect(()=> {
+    dispatch(countCitizens())
+    dispatch(countUsers())
+    dispatch(countReports())
+  }, [dispatch]);
+
   return (
     <Grid  
     justifyContent="space-between"
@@ -19,17 +43,21 @@ const DashBoardCards = () => {
     >
         
         <DashBordCardItem 
-        count={50} 
+        key={1}
+        count={countUser} 
         title={Strings.userCounts} 
         icon={<AdminPanelSettingsIcon sx={{fontSize: 34, alignContent: 'center', color: red[500]}}/>} />
 
         <DashBordCardItem 
-        count={50} 
+        key={2}
+        count={countCitizen} 
         title={Strings.citizenCount} 
         icon={<PeopleAltIcon sx={{fontSize: 34, alignContent: 'center', color: red[500]}}/>} />
 
         <DashBordCardItem 
-        count={124} 
+        
+        key={3}
+        count={countReport} 
         title={Strings.reportCount} 
         icon={<FileCopyIcon sx={{fontSize: 34, alignContent: 'center', color: red[500]}}/>} />
     </Grid>

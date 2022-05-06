@@ -34,13 +34,14 @@ export interface UserModelFromToken {
 // --------------------------------------------------- //
 // return user from redux state
 export interface UserState {
-  users: UsersModel[] | Partial<UsersModel> | null;
+  users: UsersModel[] | [];
   singleUser : Partial<UsersModel> | null;
   isError: boolean;
   isSucces: boolean;
   isLoading: boolean;
   processDone : boolean;
   message: string[] | string;
+  count : number;
 }
 
 // --------------------------------------------------- //

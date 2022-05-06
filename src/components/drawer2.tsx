@@ -166,6 +166,9 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const handleUserProfile = () => {
+    navigate(`user/${user.userId}`)
+  }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -232,7 +235,7 @@ export default function MiniDrawer() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>{Strings.myProfile}</MenuItem>
+            <MenuItem onClick={handleUserProfile}>{Strings.myProfile}</MenuItem>
             <MenuItem onClick={handleLogout}>{Strings.logout}</MenuItem>
           </Menu>
         </Toolbar>

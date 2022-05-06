@@ -33,19 +33,29 @@ const login = async (userData:LoginModel) => {
 
 // get all user
 const getAll = async (access_token: string) => {
-    const config = {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
-    const response = await axios.get(API_URL + path , config);
-    let users : CitizenModel[];
-    if(response.data){
-        users  = response.data
-        return users;
-        
+  const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
     }
-    return response.data;
+  const response = await axios.get(API_URL + path , config);
+  let users : CitizenModel[];
+  if(response.data){
+      users  = response.data
+      return users;
+      
+  }
+  return response.data;
+}
+// count all 
+const countAll = async (access_token: string) => {
+  const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  const response = await axios.get(API_URL + path + '/count' , config);
+  return response.data;
 }
 
 
@@ -116,7 +126,8 @@ const authService = {
     updateById, 
     findByID,
     searchIn,
-    logout
+    logout,
+    countAll
 }
 
 export default authService;
