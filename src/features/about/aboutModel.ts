@@ -10,7 +10,7 @@ export interface AboutModel {
 // --------------------------------------------------- //
 // return user from redux state
 export interface AboutState {
-  Abouts: AboutModel[] | Partial<AboutModel> | null;
+  Abouts: AboutModel[] | null | [];
   singleAbout : Partial<AboutModel> | null;
   isError: boolean;
   isSucces: boolean;

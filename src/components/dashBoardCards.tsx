@@ -6,14 +6,16 @@ import DashBordCardItem from './dashBoardCardItem'
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import { red } from '@mui/material/colors';
+import { Grid } from '@mui/material';
 
 const DashBoardCards = () => {
   return (
-    <Box 
-        sx={{
-            display: 'flex',
-            justifyContent: 'space-between'
-        }}
+    <Grid  
+    justifyContent="space-between"
+    container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}
+    sx={{
+      marginBottom : 2
+    }}
     >
         
         <DashBordCardItem 
@@ -30,7 +32,7 @@ const DashBoardCards = () => {
         count={124} 
         title={Strings.reportCount} 
         icon={<FileCopyIcon sx={{fontSize: 34, alignContent: 'center', color: red[500]}}/>} />
-    </Box>
+    </Grid>
   );
 }
 

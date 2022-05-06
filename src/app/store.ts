@@ -4,6 +4,7 @@ import userReducer from '../features/users/userSlice';
 import citizenReducer from '../features/citizens/citizensSlice';
 import policeOfficesReducer from '../features/police_officess/policeOfficesSlice';
 import aboutReducer from '../features/about/aboutSlice';
+import reportReducer from '../features/reports/reportSlice';
 // import snackbarReducer from '../features/components/snackbar';
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     citizen : citizenReducer,
     policeOffices : policeOfficesReducer,
     about : aboutReducer,
+    report : reportReducer,
     // snackbar : snackbarReducer
   },
 });

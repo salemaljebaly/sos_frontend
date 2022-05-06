@@ -1,9 +1,8 @@
 import { Add } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DataTable from "../../components/table";
-import { CitizensModel } from "../../features/citizens/citizensModel";
 import { UsersModel } from "../../features/users/userModel";
 import {  deleteById, getAll, reset, resetSingle } from "../../features/police_officess/policeOfficesSlice";
 import Strings from "../../utils/Strings";
@@ -113,19 +112,36 @@ function PoliceOffices() {
   return (
     // check of array of user has item then return table
     <>
-      <Button
-        variant="outlined"
-        endIcon={<Add />}
-        sx={{
-          maring: 16,
-        }}
-        onClick={() => {
-          dispatch(resetSingle());
-          navigate("/police-office");
-        }}
+      <Grid
+        container
+        justifyContent="space-between"
+        justifyItems="center"
+        alignItems="flex-start"
       >
-        {Strings.add + Strings.police_office }
-      </Button>
+        <Grid item xs={6}>
+          <Typography variant="h5" sx={{ margin: 1 }}>
+            {Strings.police_offices}
+          </Typography>
+        </Grid>
+        <Grid item xs={6} alignItems="">
+          <Button
+            variant="outlined"
+            endIcon={<Add />}
+            sx={{
+              maring: 16,
+              textAlign: "end",
+              float: "right",
+            }}
+            onClick={() => {
+              dispatch(resetSingle());
+              navigate("/police-office");
+            }}
+          >
+          {Strings.add + Strings.police_office }
+          </Button>
+        </Grid>
+      </Grid>
+
       {data?.length > 0 ? (
         <DataTable row={PoliceOfficesColumns} data={data} action={actionColumn}/>
       ) : (

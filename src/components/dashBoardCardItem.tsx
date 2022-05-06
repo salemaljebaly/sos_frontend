@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import * as React from "react";
 
 interface Props{
@@ -13,16 +13,17 @@ const DashBordCardItem: React.FC<Props> = (props) => {
       sx={{
         bgcolor: "background.paper",
         boxShadow: 1,
-        borderRadius: 2,
+        borderRadius: 1,
+        width : '31%',
         p: 2,
-        minWidth: 400,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignContent: "space-between",
       }}
     >
-      <Box>
+      
+      <Box gap={2}>
         <Box sx={{ color: "text.secondary" ,}}>{title}</Box>
         <Box sx={{ color: "text.primary", fontSize: 34, fontWeight: "bold" }}>
           {count}

@@ -1,25 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./aboutService";
-import { AboutModel, AboutState } from "./aboutModel";
+import authService from "./reporstService";
+import { ReportsModel, ReportState } from "./reportsModel";
 
-const initialState : AboutState = {
-  Abouts: [], // check if there is PoliceOffices
-  singleAbout : {},
+// Get Reports from local storage
+const user = JSON.parse(localStorage.getItem("user")!);
+const initialState : ReportState  = {
+  Reports: [], // check if there is Reports
+  singleReport : {},
   isError: false,
   isSucces: false,
   isLoading: false,
-  // use this property to check add and edit process
   processDone : false,
   message: [],
 };
 
 // ------------------------------------------------------------------------------------------- //
-// Register PoliceOffices
+// Register Reports
 export const add = createAsyncThunk(
-  "PoliceOffices/add",
-  async (about: AboutModel, thunkAPI) => {
+  "Reports/add",
+  async (Reports: ReportsModel, thunkAPI) => {
     try {
-      return await authService.add(about);
+      return await authService.add(Reports, user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -31,15 +32,14 @@ export const add = createAsyncThunk(
     }
   }
 );
-
 // ------------------------------------------------------------------------------------------- //
-// get all PoliceOfficess
+// get all Reportss
 export const getAll = createAsyncThunk (
-  "PoliceOffices/getAll",
+  "Reports/getAll",
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.getAll();
+      return await authService.getAll(user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -53,12 +53,12 @@ export const getAll = createAsyncThunk (
 );
 
 // ------------------------------------------------------------------------------------------- //
-// delete PoliceOffices by id
+// delete Reports by id
 export const deleteById = createAsyncThunk (
-  "PoliceOffices/deleteById",
+  "Reports/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(id);
+      return await authService.deleteById(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -72,13 +72,13 @@ export const deleteById = createAsyncThunk (
 );
 
 // ------------------------------------------------------------------------------------------- //
-// update PoliceOffices by id
+// update Reports by id
 export const updateById = createAsyncThunk (
-  "PoliceOffices/updateById",
-  async (about : Partial<AboutModel>, thunkAPI) => {
+  "Reports/updateById",
+  async (ReportsData : Partial<ReportsModel>, thunkAPI) => {
     try {
-      const {id, ...fields} = about;
-      return await authService.updateById(id!, fields);
+      const {id, ...fields} = ReportsData;
+      return await authService.updateById(user.access_token.toString(), id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -91,13 +91,13 @@ export const updateById = createAsyncThunk (
   }
 );
 // ------------------------------------------------------------------------------------------- //
-// update PoliceOffices by id
+// update Reports by id
 export const findById = createAsyncThunk (
-  "PoliceOffices/findById",
+  "Reports/findById",
   async (id : number, thunkAPI) => {
     try {
-      // TODO check find PoliceOffices works
-      return await authService.findByID(id);
+      // TODO check find Reports works
+      return await authService.findByID(user.access_token.toString(), id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -111,15 +111,15 @@ export const findById = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 
-export const AboutSlice = createSlice({
-  name: "about",
+export const ReportsSlice = createSlice({
+  name: "policeOffices",
   initialState,
   reducers: {
     // ------------------------------------------------------------------ //
     // reset state
     reset: (state) => {
-      state.Abouts = null;
-      state.singleAbout = null;
+      state.Reports = null;
+      state.singleReport = null;
       state.isLoading = false;
       state.isSucces = false;
       state.isError = false;
@@ -127,19 +127,15 @@ export const AboutSlice = createSlice({
       state.message = [];
     },
     resetSingle: (state) => {
-      state.singleAbout = {};
+      state.singleReport = {};
       state.message = [];
-      state.isLoading = false;
-      state.isSucces = false;
-      state.isError = false;
-      state.processDone = false;
     },
     // ------------------------------------------------------------------ //
     // use this function to changes in data 
     handleChangeData : (state ,action) => {
       console.log(action.payload);
-      state.singleAbout = {
-        ...state.singleAbout, 
+      state.singleReport = {
+        ...state.singleReport, 
         [action.payload.name] : action.payload.value
       }
     }
@@ -151,111 +147,102 @@ export const AboutSlice = createSlice({
       // register
       .addCase(add.pending, (state) => {
         state.isLoading = true;
-        state.isError = false;
-        state.isSucces = false;
         state.processDone = false;
-        state.message = [];
       })
       .addCase(add.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isSucces = true;
         state.processDone = true;
-        state.Abouts = action.payload;
+        state.Reports = action.payload;
       })
       .addCase(add.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.isSucces = false;
         state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Reports = null;
       })
       // ------------------------------------------------------------------ //
-      // get All Abouts
+      // get All Reports
       .addCase(getAll.pending, (state) => {
         state.isLoading = true;
-        state.Abouts = null;
+        state.processDone = false;
       })
       .addCase(getAll.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.processDone = false;
-        state.Abouts = action.payload;
+        state.Reports = action.payload;
       })
       .addCase(getAll.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
-        state.processDone = false;
+        state.Reports = null;
+        
         console.log(action.payload);
       })
       // ------------------------------------------------------------------ //
-      // update Abouts by id
+      // update Reports by id
       // TODO return fix  update message 
       .addCase(updateById.pending, (state) => {
-        
         state.isLoading = true;
-        state.isError = false;
-        state.isSucces = false;
         state.processDone = false;
-        state.message = [];
       })
       .addCase(updateById.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isSucces = true;
+        state.isError = false;
         state.processDone = true;
-        state.Abouts = action.payload;
+        state.Reports = action.payload;
       })
       .addCase(updateById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.processDone = false;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Reports = null;
       })
       // ------------------------------------------------------------------ //
-      // find Abouts by id
+      // find Reports by id
       // TODO return fix  delete message 
       .addCase(findById.pending, (state) => {
         state.isLoading = true;
+        state.processDone = false;
       })
       .addCase(findById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.singleAbout =  action.payload;
+        state.singleReport =  action.payload;
         console.log(action.payload)
-        state.processDone = false;
       })
       .addCase(findById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.singleAbout = null;
+        state.singleReport = null;
         
         console.log(action.payload)
       })
       // ------------------------------------------------------------------ //
-      // delete Abouts by id
+      // delete Reports by id
       // TODO return fix  delete message 
       .addCase(deleteById.pending, (state) => {
         state.isLoading = true;
-        state.Abouts = null;
-
+        state.processDone = false;
       })
       .addCase(deleteById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSucces = true;
-        state.processDone = false;
-        state.Abouts = action.payload;
+        state.Reports = action.payload;
       })
       .addCase(deleteById.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject
-        state.Abouts = null;
+        state.Reports = null;
       })
       // ------------------------------------------------------------------ //
   },
 });
 
-export const { reset ,resetSingle, handleChangeData} = AboutSlice.actions;
-export default AboutSlice.reducer;
+export const { reset ,resetSingle, handleChangeData} = ReportsSlice.actions;
+export default ReportsSlice.reducer;

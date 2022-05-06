@@ -1,5 +1,5 @@
 import { Add } from "@mui/icons-material";
-import { Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DataTable from "../../components/table";
@@ -10,12 +10,12 @@ import {
   getAll,
   reset,
   resetSingle,
-} from "../../features/about/aboutSlice";
+} from "../../features/reports/reportSlice";
 import Strings from "../../utils/Strings";
 import {
-  AboutColumns,
   citizensColumns,
   PoliceOfficesColumns,
+  ReportColumns,
 } from "../../components/models/columns";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Box } from "@mui/system";
@@ -23,9 +23,14 @@ import { green, red } from "@mui/material/colors";
 import { DeleteRounded, RemoveRedEye } from "@mui/icons-material";
 
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-import { AboutModel } from "../../features/about/aboutModel";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { ReportsModel } from "../../features/reports/reportsModel";
 
-function Abouts() {
+interface Props {
+  userData: UsersModel[];
+}
+
+function Reports() {
   const navigate = useNavigate();
   // ---------------------------------------------------------------------------------- //
   const [confirmDialog, setConfirmDialog] = React.useState({
@@ -37,14 +42,13 @@ function Abouts() {
   // ---------------------------------------------------------------------------------- //
 
   const dispatch = useDispatch();
-  const { Abouts, isError, isSucces, isLoading, message } = useSelector(
-    (state: any) => state.about
+  const { Reports, isError, isSucces, isLoading, message } = useSelector(
+    (state: any) => state.report
   );
 
   const { user } = useSelector((state: any) => state.auth);
 
-  let data: AboutModel[] = Abouts as AboutModel[];
-
+  let data: ReportsModel[] = Reports as ReportsModel[];
   useEffect(() => {
     if (user) {
       dispatch(getAll());
@@ -62,22 +66,55 @@ function Abouts() {
     });
     dispatch(deleteById(id));
     dispatch(getAll());
-    navigate("/abouts");
+    navigate("/reports");
   };
   // ---------------------------------------------------------------------------------- //
   // handle action [delete and view]
   const actionColumn = [
     {
       field: "action",
-      headerName: "التحكم",
-      width: 100,
+      headerName: "",
+      width: 220,
       renderCell: (params: any) => {
         return (
-          <Box className="cellAction">
+          <Box className="cellAction" sx={{ margin: "auto" }}>
+            <Box
+              component={"a"}
+              sx={{
+                textDecoration: "none",
+                display: "inline-block",
+                marginRight: 2,
+                marginLeft: 2,
+              }}
+              target={"_blank"}
+              href={
+                params.row.reportFilePath != null
+                  ? `${Strings.API_URL}report/upload/view/${params.row.id}`
+                  : `#`
+              }
+            >
+              <Avatar
+                key={params.row.id}
+                alt={Strings.reportImage}
+                sx={{ width: 30, height: 30 }}
+                src={
+                  params.row.reportFilePath != null
+                    ? `${Strings.API_URL}report/upload/view/${params.row.id}`
+                    : `#`
+                }
+              />
+            </Box>
+            <Box
+              component={"a"}
+              sx={{ textDecoration: "none" }}
+              target={"_blank"}
+              href={`https://maps.google.com/?q=${params.row.latitude}, ${params.row.longitude}`}
+            >
+              <FmdGoodIcon sx={{ color: green[500] }} />
+            </Box>
             <Link
-              to={`/about/${params.row.id}`}
+              to={`/report/${params.row.id}`}
               style={{ textDecoration: "none" }}
-              onClick={() => dispatch(resetSingle())}
             >
               <RemoveRedEye
                 sx={{ color: green[500], marginRight: 2, marginLeft: 2 }}
@@ -109,38 +146,10 @@ function Abouts() {
   return (
     // check of array of user has item then return table
     <>
-      <Grid
-        container
-        justifyContent="space-between"
-        justifyItems="center"
-        alignItems="flex-start"
-      >
-        <Grid item xs={6}>
-          <Typography variant="h5" sx={{ margin: 1 }}>
-            {Strings.abouts}
-          </Typography>
-        </Grid>
-        <Grid item xs={6} alignItems="">
-          <Button
-            variant="outlined"
-            endIcon={<Add />}
-            sx={{
-              maring: 16,
-              textAlign: "end",
-              float: "right",
-            }}
-            onClick={() => {
-              dispatch(resetSingle());
-              navigate("/about");
-            }}
-          >
-            {Strings.add + Strings.about}
-          </Button>
-        </Grid>
-      </Grid>
 
+      <Typography variant="h5" sx={{margin: 1}}>{Strings.reports}</Typography>
       {data?.length > 0 ? (
-        <DataTable row={AboutColumns} data={data} action={actionColumn} />
+        <DataTable row={ReportColumns} data={data} action={actionColumn} />
       ) : (
         <div>No data returned</div>
       )}
@@ -153,4 +162,4 @@ function Abouts() {
   );
 }
 
-export default Abouts;
+export default Reports;

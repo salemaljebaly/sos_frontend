@@ -17,9 +17,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { CitizensModel } from "../features/citizens/citizensModel";
 import { PolicOfficeModel } from "../features/police_officess/policeOfficesModel";
 import { AboutModel } from "../features/about/aboutModel";
+import { ReportsModel } from "../features/reports/reportsModel";
 
 interface Props {
-  data: UsersModel[] | CitizensModel[] | PolicOfficeModel[] | AboutModel[];
+  data: UsersModel[] | CitizensModel[] | PolicOfficeModel[] | AboutModel[] | ReportsModel[];
   row : GridColDef[];
   action : any;
 }
@@ -35,6 +36,7 @@ export default function DataTable({  row, data, action }: Props) {
     <>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
+          autoPageSize={true}
           rows={data}
           columns={row.concat(action)}
           pageSize={5}

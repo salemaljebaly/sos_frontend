@@ -1,5 +1,5 @@
 import { Add } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button , Grid, Typography} from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
@@ -54,7 +54,6 @@ function Users() {
       navigator('/login')
     }
   }, [dispatch]);
-  console.log(userData);
   // ---------------------------------------------------------------------------------- //
   const handleDelete = (id: number) => {
     // TODO delete from users fix delete user
@@ -110,19 +109,35 @@ function Users() {
   return (
     // check of array of user has item then return table
     <>
-      <Button
-        variant="outlined"
-        endIcon={<Add />}
-        sx={{
-          maring: 16,
-        }}
-        onClick={() => {
-          dispatch(resetSingleUser());
-          navigator("/register");
-        }}
+    <Grid
+        container
+        justifyContent="space-between"
+        justifyItems="center"
+        alignItems="flex-start"
       >
-        {Strings.add + Strings.user}
-      </Button>
+        <Grid item xs={6}>
+          <Typography variant="h5" sx={{ margin: 1 }}>
+            {Strings.users}
+          </Typography>
+        </Grid>
+        <Grid item xs={6} alignItems="">
+          <Button
+            variant="outlined"
+            endIcon={<Add />}
+            sx={{
+              maring: 16,
+              textAlign: "end",
+              float: "right",
+            }}
+            onClick={() => {
+              dispatch(resetSingleUser());
+              navigator("/register");
+            }}
+          >
+          {Strings.add + Strings.user}
+          </Button>
+        </Grid>
+      </Grid>
       {userData?.length > 0 ? (
         <DataTable row={userColumns} data={userData} action={actionColumn} />
       ) : (

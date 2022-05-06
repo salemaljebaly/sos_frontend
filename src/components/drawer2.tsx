@@ -27,12 +27,16 @@ import { AccountCircle } from "@mui/icons-material";
 import theme from "../theme/theme";
 import DashBoardCards from "./dashBoardCards";
 import DataTable from "./table";
-import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { red } from "@mui/material/colors";
 import Register from "../pages/users/Register";
-import Dashboard from "../pages/Dashboard";
-import Login from "../pages/users/Login";
-import Reports from "../pages/Reports";
+import Dashboard from "../pages/dashboard/Dashboard";
 import About from "../pages/About";
 import PolicesOffices from "../pages/police_offices/PoliceOffices";
 import Citizens from "../pages/citizens/Citizens";
@@ -44,6 +48,8 @@ import AddCitizen from "../pages/citizens/addCitizen";
 import Abouts from "../pages/about/Abouts";
 import AddPoliceOffice from "../pages/police_offices/AddPoliceOffice";
 import AddAbout from "../pages/about/AddAbout";
+import AddReport from "../pages/reports/AddReport";
+import Reports from "../pages/reports/Reports";
 
 const drawerWidth = 240;
 
@@ -121,30 +127,36 @@ const linkColor = red[300];
 const linkStyle = {
   // margin: "1rem",
   textDecoration: "none",
-  color: linkColor
+  color: linkColor,
 };
 
 // -------------------------------------------------------------------------------- //
 
 export default function MiniDrawer() {
-
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // ----------------------------------------------------------------------------------- //
   // desctruct memebers from user state [ userSlice]
-  const { user,  isError, isSucces, isLoading, message } = useSelector(
+  const { user, isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.auth
   );
   // ----------------------------------------------------------------------------------- //
 
-  React.useEffect(()=> {
-    if (!user) {  
-      navigate('/login')
+  React.useEffect(() => {
+    if (!user) {
+      navigate("/login");
     }
-  }, [])
+  }, []);
 
   const [open, setOpen] = React.useState(false);
+  const [menuSelect, setMenuSelected] = React.useState({
+    main: false,
+    user: false,
+    citizen: false,
+    report: false,
+    policeOffice: false,
+    about: false,
+  });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -160,12 +172,11 @@ export default function MiniDrawer() {
     setAnchorEl(event.currentTarget);
   };
 
-  
   const handleLogout = () => {
     // TODO try to fix delete token form main function not here
-    localStorage.removeItem('user')
-    dispatch(logout)
-    navigate('/login')
+    localStorage.removeItem("user");
+    dispatch(logout);
+    navigate("/login");
     setAnchorEl(null);
   };
 
@@ -243,57 +254,125 @@ export default function MiniDrawer() {
         {/* // --------------------------------------------------------------- // */}
         <List>
           <Link to="/" style={linkStyle}>
-            <ListItemButton selected={true}>
+            <ListItemButton
+              selected={menuSelect.main}
+              onClick={() =>
+                setMenuSelected({
+                  main: true,
+                  user: false,
+                  citizen: false,
+                  report: false,
+                  policeOffice: false,
+                  about: false,
+                })
+              }
+            >
               <ListItemIcon>
-                <DashboardIcon sx={{color: linkColor}}/>
+                <DashboardIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuMain} />
             </ListItemButton>
           </Link>
 
           <Link to="/users" style={linkStyle}>
-            <ListItem button>
+            <ListItemButton
+              selected={menuSelect.user}
+              onClick={() =>
+                setMenuSelected({
+                  main: false,
+                  user: true,
+                  citizen: false,
+                  report: false,
+                  policeOffice: false,
+                  about: false,
+                })
+              }
+            >
               <ListItemIcon>
-                <AdminPanelSettingsIcon sx={{color: linkColor}}/>
+                <AdminPanelSettingsIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuUsers} />
-            </ListItem>
+            </ListItemButton>
           </Link>
 
           <Link to="/citizens" style={linkStyle}>
-            <ListItem button>
+            <ListItemButton
+              selected={menuSelect.citizen}
+              onClick={() => setMenuSelected({
+                main : false,
+                user : false,
+                citizen : true,
+                report : false,
+                policeOffice : false,
+                about : false
+            
+              })}
+            >
               <ListItemIcon>
-                <PeopleAltIcon sx={{color: linkColor}}/>
+                <PeopleAltIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuCitizen} />
-            </ListItem>
+            </ListItemButton>
           </Link>
 
           <Link to="/reports" style={linkStyle}>
-            <ListItem button>
+            <ListItemButton
+              selected={menuSelect.report}
+              onClick={() => setMenuSelected({
+                main : false,
+                user : false,
+                citizen : false,
+                report : true,
+                policeOffice : false,
+                about : false
+            
+              })}
+            >
               <ListItemIcon>
-                <FileCopyIcon sx={{color: linkColor}}/>
+                <FileCopyIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuReports} />
-            </ListItem>
+            </ListItemButton>
           </Link>
 
           <Link to="/police-offices" style={linkStyle}>
-            <ListItem button>
+            <ListItemButton
+              selected={menuSelect.policeOffice}
+              onClick={() => setMenuSelected({
+                main : false,
+                user : false,
+                citizen : false,
+                report : false,
+                policeOffice : true,
+                about : false
+            
+              })}
+            >
               <ListItemIcon>
-                <LocalPoliceIcon sx={{color: linkColor}}/>
+                <LocalPoliceIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuPolicesOffices} />
-            </ListItem>
+            </ListItemButton>
           </Link>
 
           <Link to="/abouts" style={linkStyle}>
-            <ListItem button>
-              <ListItemIcon >
-                <InfoIcon  sx={{color: linkColor}}/>
+            <ListItemButton
+              selected={menuSelect.about}
+              onClick={() => setMenuSelected({
+                main : false,
+                user : false,
+                citizen : false,
+                report : false,
+                policeOffice : false,
+                about : true
+            
+              })}
+            >
+              <ListItemIcon>
+                <InfoIcon sx={{ color: linkColor }} />
               </ListItemIcon>
               <ListItemText primary={Strings.menuAdditionInfo} />
-            </ListItem>
+            </ListItemButton>
           </Link>
         </List>
         <Divider />
@@ -307,36 +386,37 @@ export default function MiniDrawer() {
         {/* <DataTable /> */}
         {/* <Register /> */}
         <Routes>
-            <Route path='users' element={<Users />} >
-            </Route>
-            <Route path='/user' element={<Register />} >
-              <Route path=":id" element={<Register />} />
-            </Route>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="users" element={<Users />}></Route>
+          <Route path="/user" element={<Register />}>
+            <Route path=":id" element={<Register />} />
+          </Route>
 
-            
-            <Route path='citizens' element={<Citizens />} />
-            <Route path='citizen' element={<AddCitizen />} >
-              <Route path=':id' element={<AddCitizen />} />
-            </Route>
+          <Route path="citizens" element={<Citizens />} />
+          <Route path="citizen" element={<AddCitizen />}>
+            <Route path=":id" element={<AddCitizen />} />
+          </Route>
 
+          <Route path="police-offices" element={<PolicesOffices />} />
+          <Route path="police-office" element={<AddPoliceOffice />}>
+            <Route path=":id" element={<AddPoliceOffice />} />
+          </Route>
 
-            <Route path='police-offices' element={<PolicesOffices />} />
-            <Route path='police-office' element={<AddPoliceOffice />} >
-              <Route path=':id' element={<AddPoliceOffice />} />
-            </Route>
+          <Route path="abouts" element={<Abouts />} />
+          <Route path="about" element={<AddAbout />}>
+            <Route path=":id" element={<AddAbout />} />
+          </Route>
 
-            
-            <Route path='abouts' element={<Abouts />} />
-            <Route path='about' element={<AddAbout />} >
-              <Route path=':id' element={<AddAbout />} />
-            </Route>
+          <Route path="reports" element={<Reports />} />
+          <Route path="report" element={<AddReport />}>
+            <Route path=":id" element={<AddReport />} />
+          </Route>
 
-            <Route path="/register" element={<Register />} />
-            <Route path='/reports' element={<Reports />} />
-            <Route path='/login' element={<SignIn />} />
-            <Route path='/policesoffices' element={<PolicesOffices />} />
-            <Route path='/about' element={<About />} />
-          </Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/policesoffices" element={<PolicesOffices />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </Box>
     </Box>
   );
