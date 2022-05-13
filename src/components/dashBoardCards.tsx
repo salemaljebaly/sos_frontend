@@ -20,7 +20,6 @@ const DashBoardCards = () => {
   let countReport : number = 0;
    useSelector(
     (state: any) => {
-      console.log(state);
       countCitizen = state.citizen.count;
       countUser = state.users.count;
       countReport = state.report.count;
@@ -28,6 +27,7 @@ const DashBoardCards = () => {
   );
 
   useEffect(()=> {
+    console.log(countCitizen)
     dispatch(countCitizens())
     dispatch(countUsers())
     dispatch(countReports())

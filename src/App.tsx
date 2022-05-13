@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 import MiniDrawer from "./components/drawer2";
+
+import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignIn from "./pages/users/signIn";
 function App() {
   // desctruct memebers from user state [ userSlice]
   const { user, isError, isSucces, isLoading, message } = useSelector(
@@ -7,26 +10,13 @@ function App() {
   );
   return (
     <>
-        
-      <MiniDrawer />
-        {/* {!user && <Route path="/login" element={<SignIn />} />}
-        {user && (
-          <Route>
-            <>
-            <MiniDrawer />
-            <Route path="users" element={<Users />}>
-              <Route path="profile:id" element={<Register />} />
-            </Route>
-            <Route path="/user" element={<Register />}>
-              <Route path=":id" element={<Register />} />
-            </Route>
-            <Route path="/register" element={<Register />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/policesoffices" element={<PolicesOffices />} />
-            <Route path="/about" element={<About />} />
-            </>
-          </Route>
-        )} */}
+      {user ? (
+        <MiniDrawer />
+      ) : (
+        <Routes>
+          <Route path="/login" element={<SignIn />} />
+        </Routes>
+      )}
     </>
   );
 }

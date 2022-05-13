@@ -11,7 +11,7 @@ const add = async (data: PolicOfficeModel, access_token: string) => {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
-  };
+  }; 
 
   const response = await axios.post(API_URL + path, data, config);
 

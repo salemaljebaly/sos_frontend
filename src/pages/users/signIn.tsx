@@ -59,7 +59,7 @@ export default function SignIn() {
         password: data.get("password")!.toString(),
       })
     );
-    if(isSucces) navigate("/users");
+    if(isSucces) navigate("/");
     
     if (isError) {
       setNotify({
@@ -75,7 +75,7 @@ export default function SignIn() {
   //TODO fix login when navigate to users
   React.useEffect(() => {
     if (user) {
-      navigate("/users");
+      navigate("/");
     }
   }, [dispatch]);
 

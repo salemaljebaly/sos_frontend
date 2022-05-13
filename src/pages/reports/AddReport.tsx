@@ -169,17 +169,18 @@ function AddReport() {
                 id="reporter[phone]"
                 label={Strings.phone}
                 value={singleReport["reporter"]["phone"]}
-                onChange={(e) =>
+                onChange={(e) => 
+                
                   dispatch(
                     handleChangeData({
-                      name: e.target.name,
+                      name: singleReport["reporter"]["phone"],
                       value: e.target.value,
                     })
                   )
                 }
                 name="phone"
                 autoComplete="family-name"
-                disabled
+                
               />
             </Grid>  */}
 
@@ -187,7 +188,7 @@ function AddReport() {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
-                  {Strings.permission}
+                  {Strings.reportType}
                 </InputLabel>
                 <Select
                   name="type"
@@ -196,7 +197,7 @@ function AddReport() {
                   value={
                     singleReport['type']
                   }
-                  label={Strings.permission}
+                  label={Strings.reportType}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({
@@ -217,7 +218,7 @@ function AddReport() {
             <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">
-                  {Strings.permission}
+                  {Strings.reprortState}
                 </InputLabel>
                 <Select
                   name="state"
@@ -226,7 +227,7 @@ function AddReport() {
                   value={
                     singleReport['state']
                   }
-                  label={Strings.permission}
+                  label={Strings.reprortState}
                   onChange={(e) =>
                     dispatch(
                       handleChangeData({

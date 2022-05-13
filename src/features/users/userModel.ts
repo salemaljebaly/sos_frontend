@@ -25,9 +25,10 @@ export interface LoginModel {
 export interface UserModelFromToken {
   username: string;
   firstname: string;
-  iat: 1650657067;
+  lastName: string;
+  iat: number;
   role: Role;
-  userId: number;
+  id: number;
   access_token: string;
 }
 

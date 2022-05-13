@@ -28,7 +28,6 @@ import theme from "../theme/theme";
 import DashBoardCards from "./dashBoardCards";
 import DataTable from "./table";
 import {
-  BrowserRouter,
   Link,
   Route,
   Routes,
@@ -50,6 +49,7 @@ import AddPoliceOffice from "../pages/police_offices/AddPoliceOffice";
 import AddAbout from "../pages/about/AddAbout";
 import AddReport from "../pages/reports/AddReport";
 import Reports from "../pages/reports/Reports";
+import { UserState } from "../features/auth/AuthModel";
 
 const drawerWidth = 240;
 
@@ -137,9 +137,9 @@ export default function MiniDrawer() {
   const navigate = useNavigate();
   // ----------------------------------------------------------------------------------- //
   // desctruct memebers from user state [ userSlice]
-  const { user, isError, isSucces, isLoading, message } = useSelector(
+  const { user , isError, isSucces, isLoading, message } = useSelector(
     (state: any) => state.auth
-  );
+  ) as UserState;
   // ----------------------------------------------------------------------------------- //
 
   React.useEffect(() => {
@@ -167,7 +167,8 @@ export default function MiniDrawer() {
   };
 
   const handleUserProfile = () => {
-    navigate(`user/${user.userId}`)
+    navigate(`user/${user?.id}`);
+    setAnchorEl(null);
   }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -176,9 +177,7 @@ export default function MiniDrawer() {
   };
 
   const handleLogout = () => {
-    // TODO try to fix delete token form main function not here
-    localStorage.removeItem("user");
-    dispatch(logout);
+    dispatch(logout());
     navigate("/login");
     setAnchorEl(null);
   };
@@ -414,11 +413,6 @@ export default function MiniDrawer() {
           <Route path="report" element={<AddReport />}>
             <Route path=":id" element={<AddReport />} />
           </Route>
-
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/policesoffices" element={<PolicesOffices />} />
-          <Route path="/about" element={<About />} />
         </Routes>
       </Box>
     </Box>

@@ -1,4 +1,7 @@
 // --------------------------------------------------- //
+
+import { CitizenModel, CitizensModel } from "../citizens/citizensModel";
+
 // report model
 export interface ReportsModel {
   id?:             number;
@@ -28,6 +31,7 @@ export interface ReporterModel {
   city:      string;
   longitude: string; // citizen location registered
   latitude:  string; // citizen location registered
+  reporter : CitizensModel | null;
 }
 // --------------------------------------------------- //
 // reportState model

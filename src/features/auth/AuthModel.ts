@@ -15,7 +15,7 @@ export interface UserModelFromToken {
     firstname: string;
     iat: 1650657067;
     role: Role;
-    userId: number;
+    id: number;
     access_token: string;
   }
 

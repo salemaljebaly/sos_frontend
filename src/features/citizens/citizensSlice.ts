@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./citizensService";
 import { LoginModel, CitizenModel, UserState, CitizensModel } from "./citizensModel";
+import { RootState } from "../../app/store";
+import { UserModelFromToken } from "../users/userModel";
 
 // Get citizen from local storage
-const user = JSON.parse(localStorage.getItem("user")!);
+const user = JSON.parse(localStorage.getItem("user")!) as UserModelFromToken;
 const initialState : UserState = {
   citizens: [], // check if there is citizen
   singleCitizen : {},
@@ -54,12 +56,12 @@ export const login = createAsyncThunk(
 );
 // ------------------------------------------------------------------------------------------- //
 // get all citizens
-export const getAll = createAsyncThunk (
+export const getAll = createAsyncThunk<CitizensModel[], undefined, { state: RootState }> (
   "citizen/getAll",
   async (_, thunkAPI) => {
     try {
-      // TODO get token from redux state not local storage
-      return await authService.getAll(user.access_token.toString());
+      const access_token :any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.getAll(access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -73,12 +75,12 @@ export const getAll = createAsyncThunk (
 );
 // ------------------------------------------------------------------------------------------- //
 // get all citizens
-export const countAll = createAsyncThunk (
+export const countAll = createAsyncThunk<number, undefined, {state : RootState}> (
   "citizen/countAll",
   async (_, thunkAPI) => {
     try {
-      // TODO get token from redux state not local storage
-      return await authService.countAll(user.access_token.toString()) as number;
+      const access_token :any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.countAll(access_token) as number;
     } catch (error: any) {
       const message =
         (error.response &&
@@ -97,7 +99,7 @@ export const deleteById = createAsyncThunk (
   "citizen/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(user.access_token.toString(), id);
+      return await authService.deleteById(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -117,7 +119,7 @@ export const updateById = createAsyncThunk (
   async (citizenData : Partial<CitizenModel>, thunkAPI) => {
     try {
       const {id, ...fields} = citizenData;
-      return await authService.updateById(user.access_token.toString(), id!, fields);
+      return await authService.updateById(user.access_token, id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -136,7 +138,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.findByID(user.access_token.toString(), id);
+      return await authService.findByID(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -155,7 +157,7 @@ export const searchIn = createAsyncThunk (
   async (keyword : string, thunkAPI) => {
     try {
       // TODO check find citizen works
-      return await authService.searchIn(user.access_token.toString(), keyword);
+      return await authService.searchIn(user.access_token, keyword);
     } catch (error: any) {
       const message =
         (error.response &&

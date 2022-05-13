@@ -2,9 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./userService";
 import { LoginModel, UserModel, UsersModel, UserState } from "./userModel";
 import { Role } from "../../utils/enum/role.enum";
+import { RootState } from "../../app/store";
+import { UserModelFromToken } from "../auth/AuthModel";
 
 // Get user from local storage
-const user = JSON.parse(localStorage.getItem("user")!);
+const user = JSON.parse(localStorage.getItem("user")!) as UserModelFromToken;
 const initialState: UserState = {
   users: [], // check if there is user
   singleUser: {},
@@ -54,12 +56,12 @@ export const login = createAsyncThunk(
 );
 // ------------------------------------------------------------------------------------------- //
 // get all users
-export const getAllUser = createAsyncThunk(
+export const getAllUser = createAsyncThunk<UsersModel[] , undefined, {state :  RootState}>(
   "user/getAll",
   async (_, thunkAPI) => {
     try {
-      // TODO get token from redux state not local storage
-      return await authService.getAllUsers(user.access_token.toString());
+      const access_token :any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.getAllUsers(access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -79,7 +81,7 @@ export const countAll = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.countAll(user.access_token.toString());
+      return await authService.countAll(user.access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -98,7 +100,7 @@ export const deleteUserById = createAsyncThunk(
   "user/deleteUserByID",
   async (id: number, thunkAPI) => {
     try {
-      return await authService.deleteUserById(user.access_token.toString(), id);
+      return await authService.deleteUserById(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -119,7 +121,7 @@ export const updateUserById = createAsyncThunk(
     try {
       const { id, ...fields } = userData;
       return await authService.updateUserById(
-        user.access_token.toString(),
+        user.access_token,
         id!,
         fields
       );
@@ -141,7 +143,7 @@ export const findUserById = createAsyncThunk(
   async (id: number, thunkAPI) => {
     try {
       // TODO check find user works
-      return await authService.findUserByID(user.access_token.toString(), id);
+      return await authService.findUserByID(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -161,7 +163,7 @@ export const searchInUsers = createAsyncThunk(
     try {
       // TODO check find user works
       return await authService.searchInUsers(
-        user.access_token.toString(),
+        user.access_token,
         keyword
       );
     } catch (error: any) {

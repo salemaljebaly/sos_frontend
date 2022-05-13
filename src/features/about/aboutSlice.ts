@@ -1,7 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./aboutService";
 import { AboutModel, AboutState } from "./aboutModel";
-
+import { RootState } from "../../app/store";
+import { access } from "fs";
+import { UserModel, UserModelFromToken } from "../users/userModel";
+// Get user token from local storage
+const user = JSON.parse(localStorage.getItem("user")!) as UserModelFromToken;
 const initialState : AboutState = {
   Abouts: [], // check if there is PoliceOffices
   singleAbout : {},
@@ -15,11 +19,12 @@ const initialState : AboutState = {
 
 // ------------------------------------------------------------------------------------------- //
 // Register PoliceOffices
-export const add = createAsyncThunk(
+export const add = createAsyncThunk (
   "PoliceOffices/add",
   async (about: AboutModel, thunkAPI) => {
     try {
-      return await authService.add(about);
+      
+      return await authService.add(about, user.access_token.toString());
     } catch (error: any) {
       const message =
         (error.response &&
@@ -34,12 +39,12 @@ export const add = createAsyncThunk(
 
 // ------------------------------------------------------------------------------------------- //
 // get all PoliceOfficess
-export const getAll = createAsyncThunk (
+export const getAll = createAsyncThunk<AboutModel[], undefined, { state: RootState }> (
   "PoliceOffices/getAll",
   async (_, thunkAPI) => {
     try {
-      // TODO get token from redux state not local storage
-      return await authService.getAll();
+      const access_token : any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.getAll(access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -58,7 +63,7 @@ export const deleteById = createAsyncThunk (
   "PoliceOffices/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(id);
+      return await authService.deleteById(user.access_token,id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -78,7 +83,7 @@ export const updateById = createAsyncThunk (
   async (about : Partial<AboutModel>, thunkAPI) => {
     try {
       const {id, ...fields} = about;
-      return await authService.updateById(id!, fields);
+      return await authService.updateById(user.access_token,id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -97,7 +102,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find PoliceOffices works
-      return await authService.findByID(id);
+      return await authService.findByID(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&

@@ -17,6 +17,8 @@ import {
 import { ReportsModel } from "../features/reports/reportsModel";
 import { ReportType } from "../utils/enum/reporttype";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+import { clearInterval, setInterval } from "timers";
 const containerStyle = {
   width: "100%",
   height: "600px",
@@ -71,9 +73,16 @@ function DashBoardMap() {
       openInfoWindowMarkerId: markerId,
     });
   };
+
   useEffect(() => {
     dispatch(getAll());
-  }, []);
+    // const interval = setInterval(() => {
+    //   console.log('change data')
+    //   dispatch(getAll());
+    // }, 5000);
+
+    // return () => clearInterval(interval)
+  }, [dispatch]);
   // --------------------------------------------------------------------------------------------- /
   // check if map is loaded or not
   const { isLoaded } = useJsApiLoader({
@@ -104,7 +113,6 @@ function DashBoardMap() {
     <>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        zoom={6}
         options={{
           zoom: 6,
           zoomControl: true,
@@ -119,10 +127,9 @@ function DashBoardMap() {
           .toString()
           .concat("_".concat(report.id!.toString()));
           return (
-            <>
+            <div key={markerID}>
               <Marker
                 icon={`/images/icons/${report.type}.png`}
-                key={markerID}
                 position={{
                   lat: Number.parseFloat(report.latitude),
                   lng: Number.parseFloat(report.longitude),
@@ -143,7 +150,7 @@ function DashBoardMap() {
                   </div>
                 </InfoBox> */}
               </Marker>
-            </>
+            </div>
           );
         })}
 

@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { UserModelFromToken } from "../users/userModel";
 import authService from "./reporstService";
 import { ReportsModel, ReportState } from "./reportsModel";
 
 // Get Reports from local storage
-const user = JSON.parse(localStorage.getItem("user")!);
+const user = JSON.parse(localStorage.getItem("user")!) as UserModelFromToken;
 const initialState : ReportState  = {
   Reports: [], // check if there is Reports
   singleReport : {},
@@ -21,7 +23,7 @@ export const add = createAsyncThunk(
   "Reports/add",
   async (Reports: ReportsModel, thunkAPI) => {
     try {
-      return await authService.add(Reports, user.access_token.toString());
+      return await authService.add(Reports, user.access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -35,12 +37,12 @@ export const add = createAsyncThunk(
 );
 // ------------------------------------------------------------------------------------------- //
 // get all Reportss
-export const getAll = createAsyncThunk (
+export const getAll = createAsyncThunk <ReportsModel[], undefined, { state: RootState }>(
   "Reports/getAll",
   async (_, thunkAPI) => {
     try {
-      // TODO get token from redux state not local storage
-      return await authService.getAll(user.access_token.toString());
+      const access_token :any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.getAll(access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -59,7 +61,7 @@ export const countAll = createAsyncThunk (
   async (_, thunkAPI) => {
     try {
       // TODO get token from redux state not local storage
-      return await authService.countAll(user.access_token.toString());
+      return await authService.countAll(user.access_token);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -78,7 +80,7 @@ export const deleteById = createAsyncThunk (
   "Reports/deleteById",
   async (id : number, thunkAPI) => {
     try {
-      return await authService.deleteById(user.access_token.toString(), id);
+      return await authService.deleteById(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -98,7 +100,7 @@ export const updateById = createAsyncThunk (
   async (ReportsData : Partial<ReportsModel>, thunkAPI) => {
     try {
       const {id, ...fields} = ReportsData;
-      return await authService.updateById(user.access_token.toString(), id!, fields);
+      return await authService.updateById(user.access_token, id!, fields);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -117,7 +119,7 @@ export const findById = createAsyncThunk (
   async (id : number, thunkAPI) => {
     try {
       // TODO check find Reports works
-      return await authService.findByID(user.access_token.toString(), id);
+      return await authService.findByID(user.access_token, id);
     } catch (error: any) {
       const message =
         (error.response &&
@@ -153,7 +155,7 @@ export const ReportsSlice = createSlice({
     // ------------------------------------------------------------------ //
     // use this function to changes in data 
     handleChangeData : (state ,action) => {
-      console.log(action.payload);
+      
       state.singleReport = {
         ...state.singleReport, 
         [action.payload.name] : action.payload.value
