@@ -119,6 +119,7 @@ function Users() {
           </Typography>
         </Grid>
         <Grid item xs={6} alignItems="">
+        {user.role == 'Admin' ?
           <Button
             variant="outlined"
             endIcon={<Add />}
@@ -133,7 +134,7 @@ function Users() {
             }}
           >
           {Strings.add + Strings.user}
-          </Button>
+          </Button> : null}
         </Grid>
       </Grid>
       {userData?.length > 0 ? (
