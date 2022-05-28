@@ -31,7 +31,7 @@ export default class{
     static user :string = " مستخدم ";
     static users : string = " المستخدمون ";
     static abouts : string = " معلومات اضافية ";
-    static police_offices : string = " مراكز الشرطة ";
+    static police_offices : string = " مراكز البلاغات ";
     // --------------------------------------------------------------- //
     // drawer menu items
     static menuMain: string = "الرئيسية";
