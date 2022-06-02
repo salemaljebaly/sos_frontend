@@ -2,7 +2,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { PolicOfficeModel } from "./policeOfficesModel";
 
-const API_URL = "http://localhost:4000/";
+const API_URL = process.env.REACT_APP_BASE_URL
 const path = "police-office";
 
 // Register citizen

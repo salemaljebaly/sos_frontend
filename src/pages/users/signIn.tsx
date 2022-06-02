@@ -83,6 +83,7 @@ export default function SignIn() {
     <>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
+        {console.log(process.env.REACT_APP_GOOGLE_API_KEY)}
           <CssBaseline />
           <Box
             sx={{

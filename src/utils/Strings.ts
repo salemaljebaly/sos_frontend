@@ -80,7 +80,7 @@ export default class{
   static reportType: string = "نوع البلاغ";
   static reprortState: string = "حالة البلاغ";
   static reportImage: string = "صورة البلاغ";
-  static API_URL : string = "http://localhost:4000/";
+  static API_URL : string = "http://localhost:5000/";
   static report: string = " بلاغ ";
   static reports: string = " البلاغات ";
 

@@ -87,7 +87,7 @@ function DashBoardMap() {
   // check if map is loaded or not
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyBQsISGizyptRcOYIsgn6Dd3_4_lxgbGBY",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
   });
   // --------------------------------------------------------------------------------------------- //
   const [map, setMap] = React.useState(null);
