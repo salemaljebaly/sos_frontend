@@ -1,8 +1,12 @@
-FROM node:16.15.0
+FROM node:16.13.2
 WORKDIR /usr/src/sos_frontend_app
-COPY package.json ./
-RUN yarn install
+
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
-EXPOSE 5001
-CMD ["yarn", "start"]
+EXPOSE 3001 
+
+CMD ["npm", "start"]
