@@ -83,5 +83,13 @@ export default class{
   static API_URL : string = "http://localhost:5000/";
   static report: string = " بلاغ ";
   static reports: string = " البلاغات ";
+  // --------------------------------------------------- //
+  static columnMenuUnsort: String = 'إلغاء الترتيب';
+  static columnMenuSortAsc: String = 'ترتيب تصاعدي';
+  static columnMenuSortDesc: String = 'ترتيب تنازلي';
+  static columnMenuFilter: String = 'فلترة';
+  static columnMenuHideColumn: String = 'اخفاء الحقل';
+  static columnMenuShowColumns: String = 'التحكم في حالة الاعمدة';
+  // --------------------------------------------------- //
 
 }
