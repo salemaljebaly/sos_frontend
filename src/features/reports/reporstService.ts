@@ -24,7 +24,22 @@ const getAll = async (access_token: string) => {
       Authorization: `Bearer ${access_token}`,
     },
   };
-  const response = await axios.get(API_URL + path, config);
+  const response = await axios.get(API_URL + path , config);
+  let data: ReportsModel[];
+  if (response.data) {
+    data = response.data;
+    return data;
+  }
+  return response.data;
+};
+// get by report state
+const getByReportState = async (access_token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+  const response = await axios.get(API_URL + path + '/reportsbystate', config);
   let data: ReportsModel[];
   if (response.data) {
     data = response.data;
@@ -89,7 +104,8 @@ const authService = {
   deleteById,
   updateById,
   findByID,
-  countAll
+  countAll,
+  getByReportState
 };
 
 export default authService;

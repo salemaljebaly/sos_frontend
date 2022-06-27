@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteById,
   getAll,
+  getByReportState,
   reset,
   resetSingle,
 } from "../features/reports/reportSlice";
@@ -75,7 +76,7 @@ function DashBoardMap() {
   };
 
   useEffect(() => {
-    dispatch(getAll());
+    dispatch(getByReportState());
     // const interval = setInterval(() => {
     //   console.log('change data')
     //   dispatch(getAll());

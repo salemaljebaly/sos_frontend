@@ -56,6 +56,25 @@ export const getAll = createAsyncThunk <ReportsModel[], undefined, { state: Root
 );
 // ------------------------------------------------------------------------------------------- //
 // get all Reportss
+export const getByReportState = createAsyncThunk <ReportsModel[], undefined, { state: RootState }>(
+  "Reports/getByReportState",
+  async (_, thunkAPI) => {
+    try {
+      const access_token :any = thunkAPI.getState().auth.user?.access_token;
+      return await authService.getByReportState(access_token);
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+// ------------------------------------------------------------------------------------------- //
+// get all Reportss
 export const countAll = createAsyncThunk (
   "Reports/countAll",
   async (_, thunkAPI) => {
@@ -196,6 +215,25 @@ export const ReportsSlice = createSlice({
         state.Reports = action.payload;
       })
       .addCase(getAll.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string[]; // get value when reject
+        state.Reports = [];
+        
+        console.log(action.payload);
+      })
+      // ------------------------------------------------------------------ //
+      // getByReportState
+      .addCase(getByReportState.pending, (state) => {
+        state.isLoading = true;
+        state.processDone = false;
+      })
+      .addCase(getByReportState.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSucces = true;
+        state.Reports = action.payload;
+      })
+      .addCase(getByReportState.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string[]; // get value when reject

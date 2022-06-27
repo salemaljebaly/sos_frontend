@@ -36,7 +36,7 @@ export interface ReporterModel {
 // --------------------------------------------------- //
 // reportState model
 export interface ReportState{
-  Reports: ReportsModel[]  | [] ; // check if there is PoliceOffices
+  Reports: ReportsModel[]  | [] ; 
   singleReport : Partial<ReporterModel> | null;
   isError: boolean;
   isSucces: boolean;
