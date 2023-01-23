@@ -8,7 +8,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.4",
     "@mui/styled-engine-sc": "^5.11.0",
-    "@mui/x-data-grid": "^5.17.17",
+    "@mui/x-data-grid": "^5.17.20",
     "@react-google-maps/api": "^2.17.1",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
